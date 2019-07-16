@@ -1,0 +1,128 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Nilai {{ kelompok.nama }} - {{ parent() }}
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .dl-horizontal dd {
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+    }
+    .dl-horizontal dt {
+        white-space: normal;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('plugins/tugas_kelompok', 'Tugas Kelompok')|raw }} / Nilai</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('tugas')|raw }}
+
+        <dl class="dl-horizontal">
+            <dt>Nilai Kelompok</dt>
+            <dd>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="10%">Nilai</th>
+                            <th>Catatan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ nilai_kelompok.nilai }}</td>
+                            <td>{{ nilai_kelompok.catatan }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </dd>
+            <dt>Nilai Per-Anggota</dt>
+            <dd>
+                <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th width="35%">Anggota</th>
+                        <th width="10%">Nilai</th>
+                        <th>Catatan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in daftar_anggota %}
+                    <tr>
+                        <td>
+                            <a href="{{ a.siswa.link_profil }}" target="_blank">{{ a.siswa.nis }} - {{ a.siswa.nama }}</a>
+                        </td>
+                        <td>{{ a.nilai_anggota.nilai }}</td>
+                        <td>{{ a.nilai_anggota.catatan }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </dd>
+            <hr style="border-width: 5px;">
+            <dt>Tugas</dt>
+            <dd>{% include 'tk-info-tugas.html' %}</dd>
+            <dt>Kelompok</dt>
+            <dd>{{ kelompok.nama }}</dd>
+            <dt>Intruksi / Informasi</dt>
+            <dd>{{ kelompok.intruksi|raw }}</dd>
+            <dt>Daftar Anggota</dt>
+            <dd>
+                <ul>
+                    {% for a in daftar_anggota %}
+                    <li><a target="_blank" href="{{ a.siswa.link_profil }}">{{ a.siswa.nis }} - {{ a.siswa.nama }}</a></li>
+                    {% endfor %}
+                </ul>
+            </dd>
+            <dt>Jawaban Terkumpul</dt>
+            <dd>
+                <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Pembuat</th>
+                        <th>Tanggal Jawab</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for l in list_kerjaan %}
+                    <tr>
+                        <td><a href="{{ l.anggota.siswa.link_profil }}" target="_blank">{{ l.anggota.siswa.nis }} - {{ l.anggota.siswa.nama }}</a></td>
+                        <td>{{ tgl_jam_indo(l.tgl_input) }}</td>
+                        <td>
+                            <button class="btn btn-primary btn-xs" type="button" data-toggle="modal" data-target="#myModal-{{ l.id }}">Lihat</button>
+
+                            <!-- Modal -->
+                            <div id="myModal-{{ l.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h3 id="myModalLabel">Jawaban {{ l.anggota.siswa.nama }}</h3>
+                                </div>
+                                <div class="modal-body">
+                                    {{ l.konten|raw }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Tutup</button>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </dd>
+
+        </dl>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,177 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Kerjakan Tugas Kelompok - {{ parent() }}
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .dl-horizontal dd {
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+    }
+    .dl-horizontal dt {
+        white-space: normal;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('plugins/tugas_kelompok', 'Tugas Kelompok')|raw }} / Kerjakan</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('tugas')|raw }}
+
+        {% if tugas.status == 3 %}
+            {{ get_alert('warning', "Tugas telah ditutup, anda sudah tidak dapat mengerjakan tugas kelompok ini.")|raw }}
+        {% endif %}
+
+        {% if ada_nilai == true %}
+            {{ get_alert('success', "Nilai untuk kelompok Anda sudah tersedia. <a href='" ~ site_url('plugins/tugas_kelompok/nilai/' ~ tugas.id) ~ "'>&rarr; Lihat nilai</a>")|raw }}
+        {% endif %}
+
+        <dl class="dl-horizontal">
+            <dt>Tugas</dt>
+            <dd>{% include 'tk-info-tugas.html' %}</dd>
+            <dt>Kelompok</dt>
+            <dd>{{ kelompok.nama }}</dd>
+            <dt>Intruksi / Informasi</dt>
+            <dd>{{ kelompok.intruksi|raw }}</dd>
+            <dt>Daftar Anggota</dt>
+            <dd>
+                <ul>
+                    {% for a in daftar_anggota %}
+                    <li><a target="_blank" href="{{ site_url('siswa/detail/' ~ a.siswa.id) }}">{{ a.siswa.nis }} - {{ a.siswa.nama }}</a></li>
+                    {% endfor %}
+                </ul>
+            </dd>
+            <dt>Jawaban Terkumpul</dt>
+            <dd>
+                <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Pembuat</th>
+                        <th>Tanggal Jawab</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for l in list_kerjaan %}
+                    <tr>
+                        <td><a href="{{ site_url('siswa/detail/' ~ l.anggota.siswa.id) }}" target="_blank">{{ l.anggota.siswa.nis }} - {{ l.anggota.siswa.nama }}</a></td>
+                        <td>{{ tgl_jam_indo(l.tgl_input) }}</td>
+                        <td>
+                            <button class="btn btn-primary btn-xs" type="button" data-toggle="modal" data-target="#myModal-{{ l.id }}">Lihat</button>
+
+                            <!-- Modal -->
+                            <div id="myModal-{{ l.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h3 id="myModalLabel">Jawaban {{ l.anggota.siswa.nama }}</h3>
+                                </div>
+                                <div class="modal-body">
+                                    {{ l.konten|raw }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Tutup</button>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                <br>
+            </dd>
+            {% if tugas.status == 2 and ada_nilai == false %}
+            <dt>Jawaban Anda</dt>
+            <dd>
+                <p><span>Anda masih dapat menjawab atau memperbaharui jawaban sebelumnya selama tugas belum ditutup.</span></p>
+                <form method="post" action="{{ site_url('plugins/tugas_kelompok/kerjakan/' ~ tugas.id) }}">
+                    <textarea name="jawaban" class="texteditor">{{ set_value('jawaban', kerjaan.konten)|raw }}</textarea>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Simpan Jawaban</button>
+                </form>
+                <br>
+            </dd>
+            {% endif %}
+            <dt>Penilaian Anda terhadap Anggota Lain</dt>
+            <dd>
+                {% if tugas.status == 2 and ada_nilai == false %}
+                <p>Berikan penilaian Anda terhadap kinerja masing-masing anggota dengan nilai 10 s/d 100. Nilai masih dapat diperbaharui selama tugas belum ditutup.</p>
+                {% endif %}
+
+                <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th width="35%">Anggota</th>
+                        <th>Nilai & Alasan</th>
+                        {% if tugas.status == 2 and ada_nilai == false %}
+                        <th width="10%">Aksi</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in daftar_anggota if a.siswa.id != get_sess_data('user', 'id') %}
+                    <tr>
+                        <td>
+                            <a href="{{ site_url('siswa/detail/' ~ a.siswa.id) }}" target="_blank">{{ a.siswa.nis }} - {{ a.siswa.nama }}</a>
+                        </td>
+                        <td>
+                            <select id="nilai-{{ a.id }}" style="width: auto; margin-top: 0px;" {{ (tugas.status == 3 or ada_nilai == true) ? 'disabled' }}>
+                                <option value="">--nilai--</option>
+                                {% for n in 1..10 %}
+                                <option value="{{ n }}" {{ (a.penilaian_anggota.nilai == n) ? 'selected' }}>{{ n }}</option>
+                                {% endfor %}
+                            </select>
+                            <br>
+                            <textarea id="alasan-{{ a.id }}" placeholder="Alasan" style="width: 95%;" {{ (tugas.status == 3 or ada_nilai == true) ? 'disabled' }}>{{ a.penilaian_anggota.alasan }}</textarea>
+                            <div id="result-simpan-nilai-{{ a.id }}"></div>
+                        </td>
+                        {% if tugas.status == 2 and ada_nilai == false %}
+                        <td>
+                            <button type="button" class="btn btn-primary btn-xs btn-simpan-nilai" data-anggotaid="{{ a.id }}">Simpan</button>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).on('click', '.btn-simpan-nilai', function() {
+        var anggota_id  = $(this).data('anggotaid');
+        var nilai       = $("#nilai-" + anggota_id).val();
+        var alasan      = $("#alasan-" + anggota_id).val();
+
+        if (nilai == '') {
+            alert("Anda Belum Memilih Nilai.");
+            $("#nilai-" + anggota_id).focus();
+        } else {
+            $.ajax({
+                type: "POST",
+                url: site_url + '/plugins/tugas_kelompok/kerjakan/{{ tugas.id }}',
+                data: {'anggota_id': anggota_id, 'nilai': nilai, 'alasan': alasan},
+                success: function(data) {
+                    $("#result-simpan-nilai-" + anggota_id).html('<span class="text-success"><i class="icon icon-ok"></i> Nilai Berhasil Disimpan.</span>');
+                    setTimeout(function() {
+                        $("#result-simpan-nilai-" + anggota_id).html("");
+                    }, 3000);
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

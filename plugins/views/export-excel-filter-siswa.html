@@ -1,0 +1,161 @@
+<p><b>{{ get_pengaturan('nama-sekolah', 'value') }}</b></p>
+
+<p>Parameter Export : </p>
+<table border="1">
+    {% if (filter.nis is not empty) %}
+    <tr>
+        <td>NIS</td>
+        <td>
+            {{ filter.nis }}
+        </td>
+    </tr>
+    {% endif %}
+    {% if (filter.nama is not empty) %}
+    <tr>
+        <td>Nama</td>
+        <td>
+            {{ filter.nama }}
+        </td>
+    </tr>
+    {% endif %}
+    {% if filter.jenis_kelamin is not empty %}
+    <tr>
+        <td>Jenis Kelamin</td>
+        <td>
+            {% if (filter.jenis_kelamin is defined and 'Laki-Laki' in filter.jenis_kelamin) %}
+            Laki-Laki &nbsp;
+            {% endif %}
+
+            {% if (filter.jenis_kelamin is defined and 'Perempuan' in filter.jenis_kelamin) %}
+            Perempuan
+            {% endif %}
+        </td>
+    <tr>
+    {% endif %}
+    {% if (filter.tahun_masuk is not empty) %}
+    <tr>
+        <td>Tahun Masuk</td>
+        <td>
+            {{ filter.tahun_masuk }}
+        </td>
+    <tr>
+    {% endif %}
+    {% if (filter.tempat_lahir is not empty) %}
+    <tr>
+        <td>Tempat Lahir</td>
+        <td>
+            {{ filter.tempat_lahir }}
+        </td>
+    <tr>
+    {% endif %}
+    {% if (filter.tgl_lahir != 0) or (filter.bln_lahir != 0) or (filter.tdn_lahir is not empty) %}
+    <tr>
+        <td>Tanggal Lahir</td>
+        <td>
+            {% if filter.tgl_lahir != 0 %}
+                {{ filter.tgl_lahir ~ ' ' }}
+            {% endif %}
+
+            {% if filter.bln_lahir != 0 %}
+                {{ get_indo_bulan(filter.bln_lahir) ~ ' ' }}
+            {% endif %}
+
+            {% if (filter.tdn_lahir is not empty) %}
+                {{ filter.tdn_lahir }}
+            {% endif %}
+        </td>
+    <tr>
+    {% endif %}
+    {% if (filter.alamat is not empty) %}
+    <tr>
+        <td>Alamat</td>
+        <td>
+            {{ filter.alamat }}
+        </td>
+    <tr>
+    {% endif %}
+    {% if filter.agama is not empty %}
+    <tr>
+        <td>Agama</td>
+        <td>
+            {% for a in filter.agama %}
+                {{ a ~ ' ' }}
+            {% endfor %}
+        </td>
+    <tr>
+    {% endif %}
+    {% if filter.kelas_id is not empty %}
+    <tr>
+        <td>Kelas</td>
+        <td>
+            {% for k in kelas_all %}
+                {% if k.id in filter.kelas_id %}
+                {{ k.nama ~ ' ' }}
+                {% endif %}
+            {% endfor %}
+        </td>
+    <tr>
+    {% endif %}
+    {% if filter.status_id is not empty %}
+    <tr>
+        <td>Status</td>
+        <td>
+            {% for s in filter.status_id %}
+                {% if s == 0 %}
+                    Pending &nbsp;
+                {% endif %}
+                {% if s == 1 %}
+                    Aktif &nbsp;
+                {% endif %}
+                {% if s == 2 %}
+                    Blocking &nbsp;
+                {% endif %}
+                {% if s == 2 %}
+                    Alumni
+                {% endif %}
+            {% endfor %}
+        </td>
+    <tr>
+    {% endif %}
+    {% if (filter.username is not empty) %}
+    <tr>
+        <td>Username</td>
+        <td>
+            {{ filter.username }}
+        </td>
+    </tr>
+    {% endif %}
+</table>
+<br>
+<table border="1">
+    <thead>
+        <tr>
+            <th>NIS</th>
+            <th>Nama</th>
+            <th>Jenis Kelamin</th>
+            <th>Tempat Lahir</th>
+            <th>Tgl lahir</th>
+            <th>Alamat</th>
+            <th>Agama</th>
+            <th>Tahun masuk</th>
+            <th>Password (MD5)</th>
+            <th>Kelas</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in siswas %}
+        <tr>
+            <td>{{ s.nis }}</td>
+            <td>{{ s.nama }}</td>
+            <td>{{ (s.jenis_kelamin == 'Laki-Laki') ? 'L' : 'P' }}</td>
+            <td>{{ s.tempat_lahir }}</td>
+            <td>{{ s.tgl_lahir|date('d/m/Y') }}</td>
+            <td>{{ s.alamat }}</td>
+            <td>{{ s.agama }}</td>
+            <td>{{ s.tahun_masuk }}</td>
+            <td>{{ s.login.password }}</td>
+            <td>{{ s.kelas_aktif.nama }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

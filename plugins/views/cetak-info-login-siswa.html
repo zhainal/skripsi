@@ -1,0 +1,46 @@
+{% extends 'layout-print.html' %}
+
+{% block title %}
+Cetak Informasi Login Siswa - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<table width="100%" cellpadding="5">
+    <tr>
+    {% set col = 3 %}
+    {% set l   = 0 %}
+    {% for s in siswas %}
+        {% if l >= col %}
+            </tr><tr>
+            {% set l = 0 %}
+        {% endif %}
+        {% set l = l + 1 %}
+
+        <td>
+            <div style="border:1px solid gray;padding-bottom:5px;">
+                <p><center><b>Informasi Login E-learning</b></center></p>
+                <table class="table table-condensed table-striped" style="margin-bottom: 5px;">
+                    <tr>
+                        <td style="width:70px;">NIS</td>
+                        <td>: {{ s.nis }}</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">Nama</td>
+                        <td>: {{ s.nama }}</td>
+                    </tr>
+                    <tr>
+                        <td>Username</td>
+                        <td valign="top">: {{ s.login.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td valign="top">: {{ s.login.password }}</td>
+                    </tr>
+                </table>
+                <center>{{ base_url() }}</center>
+            </div>
+        </td>
+    {% endfor %}
+    </tr>
+</table>
+{% endblock %}

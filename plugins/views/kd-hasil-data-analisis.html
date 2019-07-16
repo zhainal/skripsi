@@ -1,0 +1,61 @@
+{% extends "kd-layout-hasil.html" %}
+
+{% block title %}
+Hasil Data - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<center>
+    <h5>
+        ANALISIS PENCAPAIAN KOMPETENSI DASAR
+    </h5>
+</center>
+
+<table>
+    <tr>
+        <td><b>Mata Pelajaran</b></td>
+        <td>: {{ r.tugas.mapel.nama }}</td>
+    </tr>
+    <tr>
+        <td><b>Judul Soal</b></td>
+        <td>: {{ r.tugas.judul }}</td>
+    </tr>
+</table>
+
+<table class="table table-bordered table-hover table-condensed">
+    <thead>
+        <tr bgcolor="#f5f5f5">
+            <th rowspan="2">Kompetensi Dasar</th>
+            <th rowspan="2">No.Soal</th>
+            <th colspan="{{ count(kelas_nilai) }}"><center>Jumlah soal yg dijawab benar oleh Siswa / Kelas</center></th>
+        </tr>
+        <tr bgcolor="#f5f5f5">
+            {% for k in kelas_nilai %}
+            <th>{{ k.nama }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in list_pertanyaan_id %}
+        <tr>
+            <td>{{ list_kd_pertanyaan_id[p] }}</td>
+            <td>{{ loop.index }}</td>
+            {% for k in kelas_nilai %}
+                <td>
+                    {% if list_perkelas[k.id][p] is not empty %}
+                        {{ list_perkelas[k.id][p] }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+{% if mode is empty %}
+<a href="{{ site_url('plugins/pencapaian_kd/hasil_data/' ~ r.id ~ '/analisis_kd' ~ '?mode=excel') }}" class="btn btn-primary">Cetak Excel</a>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Tambah Tugas {{ type_label }} - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('tugas', 'Tugas')|raw }} / Tambah Tugas {{ type_label }}</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('tugas')|raw }}
+
+        {{ form_open_multipart('plugins/custom_tugas/add/' ~ type, {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">Judul <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="text" name="judul" class="span12" value="{{ set_value('judul') }}">
+                    <br>{{ form_error('judul')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Mata Pelajaran <span class="text-error">*</span></label>
+                <div class="controls">
+                    <select name="mapel_id">
+                        <option value="">--pilih--</option>
+                        {% for m in mapel %}
+                        <option value="{{ m.id }}" {{ set_select('mapel_id', m.id) }}>{{ m.nama }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>{{ form_error('mapel_id')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Kelas <span class="text-error">*</span></label>
+                <div class="controls">
+                    <ul class="unstyled inline" style="margin-left: -5px;">
+                        {% for k in kelas %}
+                        <li>
+                            <label class="checkbox inline">
+                                <input type="checkbox" name="kelas_id[]" value="{{ k.id }}" {{ set_checkbox('kelas_id[]', k.id) }}> {{ k.nama }}
+                            </label>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {{ form_error('kelas_id[]')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Info</label>
+                <div class="controls">
+                    <textarea name="info" id="info" class="texteditor">{{ set_value('info')|raw }}</textarea>
+                    {{ form_error('info')|raw }}
+                </div>
+            </div>
+            {% if type != 1 %}
+            <div class="control-group">
+                <label class="control-label">Maksimal Jumlah Soal</label>
+                <div class="controls">
+                    <input type="text" name="max_jml_soal" class="span2" value="{{ set_value('max_jml_soal') }}">
+                    <br><span class="text-warning">*) Jika maksimal jumlah soal diatur 20 dan soal diinputkan 25, maka hanya akan diambil 20 dari 25 soal</span>
+                    <br>{{ form_error('max_jml_soal')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Model Urutan Soal</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" name="model_urutan_soal" value="1" {{ set_radio('model_urutan_soal', '1', true) }}> Acak</label>
+                    <label class="radio inline"><input type="radio" name="model_urutan_soal" value="2" {{ set_radio('model_urutan_soal', '2') }}> Berurutan</label>
+                    <br>{{ form_error('model_urutan_soal')|raw }}
+                </div>
+            </div>
+            {% if type == 3 %}
+            <div class="control-group">
+                <label class="control-label">Model Urutan Pilihan</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" name="model_urutan_pilihan" value="1" {{ set_radio('model_urutan_pilihan', '1') }}> Acak</label>
+                    <label class="radio inline"><input type="radio" name="model_urutan_pilihan" value="2" {{ set_radio('model_urutan_pilihan', '2', true) }}> Berurutan</label>
+                    <br>{{ form_error('model_urutan_pilihan')|raw }}
+                </div>
+            </div>
+            {% endif %}
+            <div class="control-group">
+                <label class="control-label">Tampil Soal Per-Halaman</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" name="tampil_soal_perhalaman" value="0" {{ set_radio('tampil_soal_perhalaman', '0', true) }}> Semua</label>
+                    <label class="radio inline"><input type="radio" name="tampil_soal_perhalaman" value="1" {{ set_radio('tampil_soal_perhalaman', '1') }}> 1</label>
+                    <label class="radio inline"><input type="radio" name="tampil_soal_perhalaman" value="5" {{ set_radio('tampil_soal_perhalaman', '5') }}> 5</label>
+                    <label class="radio inline"><input type="radio" name="tampil_soal_perhalaman" value="10" {{ set_radio('tampil_soal_perhalaman', '10') }}> 10</label>
+                    <br>{{ form_error('tampil_soal_perhalaman')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Durasi <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="text" name="durasi" class="span2" value="{{ set_value('durasi') }}" placeholder="Dalam Menit">
+                    <br>{{ form_error('durasi')|raw }}
+                </div>
+            </div>
+            {% endif %}
+            <div class="control-group">
+                <label class="control-label">Tampil Nilai ke Siswa</label>
+                <div class="controls">
+                    {% for key, label in plugin_helper('custom_tugas', 'ct_option_tampil_nilai_kesiswa') %}
+                        <label class="radio"><input type="radio" name="tampil_nilai_kesiswa" value="{{ key }}" {{ set_radio('tampil_nilai_kesiswa', key, (loop.index == 1) ? true) }}> {{ label }}</label>
+                    {% endfor %}
+                    {{ form_error('tampil_nilai_kesiswa')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Terbitkan Pada</label>
+                <div class="controls">
+                    <input type="text" name="terbitkan_pada" id="terbitkan_pada" class="span3" value="{{ set_value('terbitkan_pada') }}"> <br>Format: Tahun-Bulan-Tanggal Jam:Menit. Contoh: 2019-07-23 07:15
+                    <br>{{ form_error('terbitkan_pada')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Tutup Pada</label>
+                <div class="controls">
+                    <input type="text" name="tutup_pada" id="tutup_pada" class="span3" value="{{ set_value('tutup_pada') }}"> <br>Format: Tahun-Bulan-Tanggal Jam:Menit. Contoh: 2019-07-25 06:15
+                    <br>{{ form_error('tutup_pada')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <a href="{{ site_url('tugas') }}" class="btn btn-default">Kembali</a>
+                </div>
+            </div>
+        {{ form_close()|raw }}
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+<table class="table table-striped">
+{% for k in kd_mapel %}
+<tr>
+    <td>
+        <label>
+            <input type="checkbox" name="kd_mapel_id[]" value="{{ k.id }}" style="margin-top:-5px;"
+            {% if default_checked is not empty %}
+                {% if in_array(k.id, default_checked) %}
+                    checked=""
+                {% endif %}
+            {% else %}
+                checked=""
+            {% endif %}
+            > <span id="label-kd-{{ k.id }}">{{ k.nama }}</span>
+            <div id="edit-{{ k.id }}" class="collapse">
+                <table class="table table-condensed table-striped">
+                    <tr>
+                        <td>
+                            <input type="text" class="input-small span10" id="edit-value-{{ k.id }}" placeholder="Nama KD" value="{{ k.nama }}">
+                        </td>
+                        <td><button class="btn btn-primary update-kd" type="button" data-id="{{ k.id }}">Update</button></td>
+                    </tr>
+                </table>
+            </div>
+        </label>
+    </td>
+    <td width="20%">
+        <div class="btn-group">
+            <button type="button" class="btn btn-xs btn-primary" data-toggle="collapse" data-target="#edit-{{ k.id }}">Edit</button>
+            <button type="button" class="btn btn-xs btn-default delete-kd" data-id="{{ k.id }}">Hapus</button>
+        </div>
+    </td>
+</tr>
+{% endfor %}
+</table>

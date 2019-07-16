@@ -1,0 +1,51 @@
+{% extends 'layout-print.html' %}
+
+{% block title %}
+Cetak Soal Tugas - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<p>
+    {{ tugas.judul }} - {{ tugas.mapel.nama }}
+    <br>
+    {% for k in tugas.tugas_kelas %}
+    {{ k.nama }},
+    {% endfor %}
+</p>
+<p><b>Info : </b>{{ tugas.info|raw }}</p>
+<p><b>Durasi : </b>{{ tugas.durasi }} Menit</p>
+
+<table class="table">
+    <tbody>
+        {% for p in pertanyaan %}
+        <tr id="pertanyaan-{{ p.id }}">
+            <td width="3%" style="border-top: 0px;"><b>{{ loop.index }}.</b></td>
+            <td style="border-top: 0px;">
+                <div class="pertanyaan">
+                    {{ p.pertanyaan|raw }}
+                </div>
+
+                {% if tugas.type_id == 3 %}
+                <div id="pilihan-{{ p.id }}">
+                    <table class="table table-condensed" style="margin-bottom: 0px;">
+                        <tbody>
+                            {% for pil in p.pilihan if pil.konten is not empty %}
+                            <tr>
+                                <td width="3%" style="border-top: 0px;"><b>({{ get_abjad(pil.urutan) }})</b></td>
+                                <td style="border-top: 0px;">
+                                    {{ pil.konten|raw }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+            </td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+KD Nomor Soal - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('plugins/pencapaian_kd', 'Analisis Pencapaian Kompetensi Dasar')|raw }} / KD Nomor Soal</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('kd')|raw }}
+
+        <table class="table table-bordered datatable table-striped">
+            <thead>
+                <tr>
+                    <th width="10%">Analisis ID</th>
+                    <th>Tugas & Kompetensi Dasar</th>
+                    <th width="15%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>#{{ r.id }}</td>
+                <td>
+                    ID : {{ r.tugas.id }} - {{ r.tugas.judul }} - {{ r.tugas.mapel.nama }} - {{ r.tugas.nama_kelas }}<br>
+                    <hr style="margin-top:5px; margin-bottom: 5px;">
+                    KD : {{ r.kd_mapel_nama }}
+                    <br>Nilai Minimal Lulus : {{ r.nilai_lulus }}
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn btn-xs btn-default" href="{{ site_url('plugins/pencapaian_kd/edit/' ~ r.id ~ '/' ~ enurl_redirect(current_url())) }}"><i class="icon icon-edit"></i> Edit</a>
+                        <a class="btn btn-xs btn-success" href="{{ site_url('plugins/pencapaian_kd/hasil_data/' ~ r.id) }}"><i class="icon icon-download"></i> Hasil Data</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="5%">No</th>
+                    <th>Pertanyaan dan Pilihan</th>
+                    <th>Pilih Kompetensi Dasar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pertanyaan %}
+                <tr id="pertanyaan-{{ p.id }}">
+                    <td><b>{{ loop.index }}.</b></td>
+                    <td>
+                        <div class="pertanyaan">
+                            {{ p.pertanyaan|raw }}
+                        </div>
+
+                        <div id="pilihan-{{ p.id }}">
+                            <table class="table table-condensed table-striped">
+                                <tbody>
+                                    {% for pil in p.pilihan if pil.konten is not empty %}
+                                    <tr>
+                                        <td width="5%">{{ get_abjad(pil.urutan) }}</td>
+                                        <td>
+                                            {{ pil.konten|raw }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </td>
+                    <td>
+                        <select class="select_kd" data-pertanyaan-id="{{ p.id }}">
+                            <option>--pilih--</option>
+                            {% for k in r.kd_tugas_kd %}
+                            <option value="{{ k.id }}" {{ (k.no_soal_arr.pertanyaan_id is not empty and in_array(p.id, k.no_soal_arr.pertanyaan_id) ? 'selected') }}>{{ k.kd_mapel.nama }}</option>
+                            {% endfor %}
+                        </select>
+                        <div id="result-{{ p.id }}"></div>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).on('change', '.select_kd', function() {
+        var kd_tugas_kd_id = $(this).val();
+        var pertanyaan_id  = $(this).data('pertanyaan-id');
+
+        $.ajax({
+            type: "POST",
+            url: site_url + '/plugins/pencapaian_kd/ajax/set_kd_no_soal',
+            data: {'id': kd_tugas_kd_id, 'pertanyaan_id': pertanyaan_id},
+            success: function (data) {
+                if (data == 1) {
+                    $("#result-" + pertanyaan_id).html("<div class='alert alert-success'><i class='icon icon-ok'></i> Data Berhasil Disimpan</div>");
+                } else if (data == 0) {
+                    $("#result-" + pertanyaan_id).html("Data Gagal Disimpan");
+                }
+
+                setTimeout(function() {
+                    $("#result-" + pertanyaan_id).html("");
+                }, 2000);
+            },
+            async: false,
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Tugas Kelompok - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>Tugas Kelompok</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('tugas')|raw }}
+
+        <div class="bs-callout bs-callout-info">
+            {% if (is_siswa() == false) %}
+            <div class="btn-group pull-right" style="margin-top:-5px;">
+                {{ anchor('plugins/tugas_kelompok/add', 'Tambah Tugas', {'class' : 'btn btn-primary'})|raw }}
+            </div>
+            {% endif %}
+            <b><a class="as-link" data-toggle="collapse" data-target="#form-filter"><i class="icon-search" style="line-height: 0px;"></i> PARAMETER PENCARIAN</a></b>
+
+            <div id="form-filter" class="collapse" style="margin-top: 5px;">
+                {{ form_open('plugins/tugas_kelompok/index')|raw }}
+                    <table class="table table-condensed">
+                        <tr>
+                            <th  style="border-top: none;">Mapel</th>
+                            <td  style="border-top: none;">
+                                <ul class="unstyled inline" style="margin-left: -5px;">
+                                    {% for m in mapel %}
+                                    <li>
+                                        <label class="checkbox inline">
+                                            <input type="checkbox" name="mapel_id[]" value="{{ m.id }}" {{ set_checkbox('mapel_id[]', m.id, (filter.mapel_id is not empty and in_array(m.id, filter.mapel_id)) ? true) }}> {{ m.nama }}
+                                        </label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                        {% if (is_siswa() == false) %}
+                        <tr>
+                            <th>Kelas</th>
+                            <td>
+                                <ul class="unstyled inline" style="margin-left: -5px;">
+                                    {% for k in kelas %}
+                                    <li>
+                                        <label class="checkbox inline">
+                                            <input type="checkbox" name="kelas_id[]" value="{{ k.id }}" {{ set_checkbox('kelas_id[]', k.id, (filter.kelas_id is not empty and in_array(k.id, filter.kelas_id)) ? true) }}> {{ k.nama }}
+                                        </label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th width="15%">Judul</th>
+                            <td>
+                                <input type="text" name="judul" class="span4" value="{{ set_value('judul', filter.judul) }}">
+                            </td>
+                        </tr>
+                        {% if is_pengajar() == false %}
+                        <tr>
+                            <th>Pembuat</th>
+                            <td>
+                                <input type="text" name="pembuat" class="span4" value="{{ set_value('pembuat', filter.pembuat) }}">
+                            </td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                <ul class="unstyled inline" style="margin-left: -5px;">
+                                    {% if is_siswa() == false %}
+                                    <li>
+                                        <label class="checkbox inline">
+                                            <input type="checkbox" name="status[]" value="1" {{ set_checkbox('status[]', '1', (filter.status is not empty and in_array('1', filter.status)) ? true) }}> Draft
+                                        </label>
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <label class="checkbox inline">
+                                            <input type="checkbox" name="status[]" value="2" {{ set_checkbox('status[]', '2', (filter.status is not empty and in_array('2', filter.status)) ? true) }}> Terbit
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="checkbox inline">
+                                            <input type="checkbox" name="status[]" value="3" {{ set_checkbox('status[]', '3', (filter.status != '' and in_array('3', filter.status)) ? true) }}> Tutup
+                                        </label>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+        </div>
+        <br>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="7%">ID</th>
+                    <th>Judul</th>
+                    <th>Mata Pelajaran</th>
+                    {% if is_siswa() == false %}
+                    <th>Kelas</th>
+                    {% endif %}
+                    <th>Status</th>
+                    <th>Pembuat</th>
+                    {% if is_siswa() == true %}
+                    <th></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in tugas %}
+                <tr class="{{ (d.status == 2) ? 'success' }}">
+                    <td>{{ d.id }}</td>
+                    <td>
+                        {% if is_siswa() %}
+                            {{ d.judul }}
+                        {% else %}
+                            <b><a href="{{ site_url('plugins/tugas_kelompok/kelompok/' ~ d.id) }}">{{ d.judul }}</a></b>
+                        {% endif %}
+                    </td>
+                    <td>{{ d.mapel.nama }}</td>
+                    {% if is_siswa() == false %}
+                    <td>{{ d.kelas.nama }}</td>
+                    {% endif %}
+                    <td>
+                        {{ d.label_status|upper }}
+                    </td>
+                    <td>
+                        <a href="{{ d.pengajar.link_profil }}">{{ d.pengajar.nama }}</a>
+                    </td>
+                    {% if is_siswa() == true %}
+                    <td>
+                        <div class="btn-group">
+                            {% if d.status == 2 %}
+                                <a href="{{ site_url('plugins/tugas_kelompok/kerjakan/' ~ d.id) }}" class="btn btn-primary btn-xs"><i class="icon icon-play"></i> Kerjakan</a>
+                            {% elseif d.status == 3 %}
+                                <a href="{{ site_url('plugins/tugas_kelompok/nilai/' ~ d.id) }}" class="btn btn-primary btn-xs"><i class="icon-info-sign"></i> Lihat Nilai</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        {{ pagination|raw }}
+
+    </div>
+</div>
+{% endblock %}

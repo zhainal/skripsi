@@ -1,0 +1,18 @@
+
+<a class="as-link pull-right" data-toggle="collapse" data-target="#form-add">Tambah KD</a>
+<h4>Pilih KD Mapel <b>"{{ tugas.mapel.nama }}"</b></h4>
+
+<div id="form-add" class="{{ (kd_mapel is not empty) ? 'collapse' }}">
+    <table class="table table-condensed table-striped">
+        <tr>
+            <td>Tambah KD</td>
+            <td>
+                <input type="text" id="new_nama_kd" class="input-small span10" placeholder="Nama KD">
+            </td>
+            <td><button class="btn btn-primary" id="btn_new_kd" type="button">Simpan</button></td>
+        </tr>
+    </table>
+    <br>
+</div>
+
+<div id="view_form_list_kd_mapel"></div>

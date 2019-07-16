@@ -1,0 +1,75 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Edit Soal - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('tugas', 'Tugas')|raw }} / {{ anchor(uri_back, 'Manajemen Soal Tugas')|raw }} / Edit Soal</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('bank')|raw }}
+
+        {{ form_open('plugins/bank_soal/edit_soal/' ~ tugas.id ~ '/' ~ pertanyaan.id ~ '/' ~ enurl_redirect(uri_back), {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">Pertanyaan <span class="text-error">*</span></label>
+                <div class="controls">
+                    <textarea class="texteditor" name="pertanyaan" id="pertanyaan">{{ set_value('pertanyaan', pertanyaan.pertanyaan)|raw }}</textarea>
+                    {{ form_error('pertanyaan')|raw }}
+                </div>
+            </div>
+            {% if pilihan is not empty %}
+            <div class="control-group">
+                <label class="control-label">Pilihan A</label>
+                <div class="controls">
+                    <textarea class="texteditor" name="pilihan_a" id="pilihan_a">{{ set_value('pilihan_a', pilihan[0]['konten'])|raw }}</textarea>
+                    {{ form_error('pilihan_a')|raw }}
+                    <label class="radio inline"><input type="radio" name="kunci" value="a" {{ (pilihan[0]['kunci'] == '1') ? 'checked' }}><b>Jadikan A Kunci</b></label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Pilihan B</label>
+                <div class="controls">
+                    <textarea class="texteditor" name="pilihan_b" id="pilihan_b">{{ set_value('pilihan_b', pilihan[1]['konten'])|raw }}</textarea>
+                    {{ form_error('pilihan_b')|raw }}
+                    <label class="radio inline"><input type="radio" name="kunci" value="b" {{ (pilihan[1]['kunci'] == '1') ? 'checked' }}><b>Jadikan B Kunci</b></label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Pilihan C</label>
+                <div class="controls">
+                    <textarea class="texteditor" name="pilihan_c" id="pilihan_c">{{ set_value('pilihan_c', pilihan[2]['konten'])|raw }}</textarea>
+                    {{ form_error('pilihan_c')|raw }}
+                    <label class="radio inline"><input type="radio" name="kunci" value="c" {{ (pilihan[2]['kunci'] == '1') ? 'checked' }}><b>Jadikan C Kunci</b></label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Pilihan D</label>
+                <div class="controls">
+                    <textarea class="texteditor" name="pilihan_d" id="pilihan_d">{{ set_value('pilihan_d', pilihan[3]['konten'])|raw }}</textarea>
+                    {{ form_error('pilihan_d')|raw }}
+                    <label class="radio inline"><input type="radio" name="kunci" value="d" {{ (pilihan[3]['kunci'] == '1') ? 'checked' }}><b>Jadikan D Kunci</b></label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Pilihan E</label>
+                <div class="controls">
+                    <textarea class="texteditor" name="pilihan_e" id="pilihan_e">{{ set_value('pilihan_e', pilihan[4]['konten'])|raw }}</textarea>
+                    {{ form_error('pilihan_e')|raw }}
+                    <label class="radio inline"><input type="radio" name="kunci" value="e" {{ (pilihan[4]['kunci'] == '1') ? 'checked' }}><b>Jadikan E Kunci</b></label>
+                </div>
+            </div>
+            {% endif %}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <a href="{{ uri_back }}" class="btn btn-default">Kembali</a>
+                </div>
+            </div>
+        {{ form_close()|raw }}
+
+    </div>
+</div>
+{% endblock %}

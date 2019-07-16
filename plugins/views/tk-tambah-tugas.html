@@ -1,0 +1,58 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Tambah Tugas Kelompok - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('plugins/tugas_kelompok', 'Tugas Kelompok')|raw }} / Tambah Tugas</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('tugas')|raw }}
+
+        {{ form_open_multipart('plugins/tugas_kelompok/add', {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">Judul <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="text" name="judul" class="span10" value="{{ set_value('judul') }}">
+                    <br>{{ form_error('judul')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Mata Pelajaran <span class="text-error">*</span></label>
+                <div class="controls">
+                    <select name="mapel_id">
+                        <option value="">--pilih--</option>
+                        {% for m in mapel %}
+                        <option value="{{ m.id }}" {{ set_select('mapel_id', m.id) }}>{{ m.nama }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>{{ form_error('mapel_id')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Kelas <span class="text-error">*</span></label>
+                <div class="controls">
+                    <select name="kelas_id">
+                        <option value="">--pilih--</option>
+                        {% for k in kelas %}
+                        <option value="{{ k.id }}" {{ set_select('kelas_id', k.id) }}>{{ k.nama }}</option>
+                        {% endfor %}
+                    </select>
+                    *) Kelas tidak dapat diperbaharui setelah tugas disimpan.
+                    <br>{{ form_error('kelas_id')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <a href="{{ site_url('plugins/tugas_kelompok') }}" class="btn btn-default">Kembali</a>
+                </div>
+            </div>
+        {{ form_close()|raw }}
+
+    </div>
+</div>
+{% endblock %}

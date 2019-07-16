@@ -1,0 +1,133 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Tambah Analisis - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('plugins/pencapaian_kd', 'Analisis Pencapaian Kompetensi Dasar')|raw }} / Tambah Analisis</h3>
+    </div>
+    <div class="module-body">
+        {{ form_open('plugins/pencapaian_kd/add', {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">Tugas Pilihan Ganda <span class="text-error">*</span></label>
+                <div class="controls">
+                    <select name="tugas_id" id="tugas_id">
+                        <option value="">--pilih--</option>
+                        {% for t in tugas_ganda %}
+                        <option value="{{ t.id }}">{{ t.id }} - {{ t.judul }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>{{ form_error('tugas_id')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Nilai Minimal Lulus</label>
+                <div class="controls">
+                    <input type="text" name="nilai_lulus" value="{{ set_value('nilai_lulus', '0.00') }}" style="width: 50px;">
+                    <br>{{ form_error('nilai_lulus')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls" id="view_response"></div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    {{ form_error('kd_mapel_id[]')|raw }}
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <a href="{{ site_url('plugins/pencapaian_kd') }}" class="btn">Batal</a>
+                    </div>
+                </div>
+            </div>
+        {{ form_close()|raw }}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $("#tugas_id").on('change', function() {
+        $.ajax({
+            type: "POST",
+            url: site_url + '/plugins/pencapaian_kd/ajax/on_select_tugas_id',
+            data: {tugas_id: $(this).val()},
+            success: function (data) {
+                $("#view_response").html(data);
+            },
+            async: false,
+        });
+
+        list_form_kd_mapel($(this).val());
+    });
+
+    $(document).on('click', '#btn_new_kd', function() {
+        var tugas_id    = $("#tugas_id").val();
+        var new_nama_kd = $("#new_nama_kd").val();
+        if (new_nama_kd == '') {
+            alert("Nama KD Dibutuhkan");
+            return (false);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: site_url + '/plugins/pencapaian_kd/ajax/add_kd_mapel',
+            data: {'tugas_id': tugas_id, 'nama': new_nama_kd},
+            async: false,
+        });
+
+        list_form_kd_mapel(tugas_id);
+
+        $("#new_nama_kd").val("");
+    });
+
+    $(document).on('click', '.update-kd', function() {
+        var kd_id = $(this).data("id");
+        var new_nama_kd = $("#edit-value-" + kd_id).val();
+
+        $("#label-kd-" + kd_id).html(new_nama_kd);
+
+        $.ajax({
+            type: "POST",
+            url: site_url + '/plugins/pencapaian_kd/ajax/edit_kd_mapel',
+            data: {'id': kd_id, 'nama': new_nama_kd},
+            async: false,
+        });
+
+        $("#edit-" + kd_id).collapse('hide');
+    });
+
+    $(document).on('click', '.delete-kd', function() {
+        var conf = confirm("Anda yakin ingin menghapus?");
+        if (conf) {
+            var kd_id = $(this).data("id");
+
+            $.ajax({
+                type: "POST",
+                url: site_url + '/plugins/pencapaian_kd/ajax/delete_kd_mapel',
+                data: {'id': kd_id},
+                async: false,
+            });
+
+            $(this).closest("tr").remove();
+        }
+
+        return (false);
+    });
+
+    function list_form_kd_mapel(tugas_id)
+    {
+        $.ajax({
+            type: "POST",
+            url: site_url + '/plugins/pencapaian_kd/ajax/form_list_kd_mapel',
+            data: {'tugas_id': tugas_id},
+            success: function (data) {
+                $("#view_form_list_kd_mapel").html(data);
+            }
+        });
+    }
+</script>
+{% endblock %}

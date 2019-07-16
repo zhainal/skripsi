@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}{{ site_name }}{% endblock %}</title>
+        {% include 'layout-header.html' %}
+        <style type="text/css">
+            body {
+                font-size: 10px;
+            }
+        </style>
+        {% block css %}{% endblock %}
+    </head>
+
+    <body>
+        <br>
+        <div class="kop-print">
+            <img src="{{ get_logo_config() }}">
+            <div class="kop-nama">{{ get_pengaturan('nama-sekolah', 'value') }}</div>
+            <div class="kop-info">Alamat : {{ get_pengaturan('alamat', 'value') }}, Telpon : {{ get_pengaturan('telp', 'value') }}</div>
+        </div>
+        <hr class="kop-print-hr">
+        <br>
+        {% block content %}{% endblock %}
+
+    </body>
+</html>

@@ -1,0 +1,54 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Analisis Pencapaian Kompetensi Dasar - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>Analisis Pencapaian Kompetensi Dasar</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('kd')|raw }}
+
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ site_url('plugins/pencapaian_kd/add') }}">Tambah Analisis</a>
+        </div>
+        <br>
+        <br>
+
+        <table class="table table-bordered datatable table-striped">
+            <thead>
+                <tr>
+                    <th width="10%">Analisis ID</th>
+                    <th>Tugas & Kompetensi Dasar</th>
+                    <th width="15%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for t in tugas %}
+            <tr>
+                <td>#{{ t.id }}</td>
+                <td>
+                    ID : {{ t.tugas.id }} - {{ t.tugas.judul }} - {{ t.tugas.mapel.nama }} - {{ t.tugas.nama_kelas }}<br>
+                    <hr style="margin-top:5px; margin-bottom: 5px;">
+                    KD : {{ t.kd_mapel_nama }}
+                    <br>Nilai Minimal Lulus : {{ t.nilai_lulus }}
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn btn-xs btn-default" href="{{ site_url('plugins/pencapaian_kd/edit/' ~ t.id ~ '/' ~ enurl_redirect(current_url())) }}"><i class="icon icon-edit"></i> Edit</a>
+                        <a class="btn btn-xs btn-primary" href="{{ site_url('plugins/pencapaian_kd/kd_no_soal/' ~ t.id) }}"><i class="icon icon-th"></i> KD No.Soal</a>
+                        <a class="btn btn-xs btn-success" href="{{ site_url('plugins/pencapaian_kd/hasil_data/' ~ t.id) }}"><i class="icon icon-download"></i> Hasil Data</a>
+                        <a class="btn btn-xs btn-danger" href="{{ site_url('plugins/pencapaian_kd/delete/' ~ t.id) }}" onclick="return confirm('Anda yakin ingin menghapus?')"><i class="icon icon-trash"></i> Hapus</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock %}

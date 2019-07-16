@@ -1,0 +1,303 @@
+{% extends "layout-ujian.html" %}
+
+{% block title %}
+{{ data.tugas.judul }} - {{ parent() }}
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .no-list {
+        padding-left: 0px;
+        list-style: outside none none;
+        margin-top: 20px;
+        margin-right: 12px;
+    }
+    .no-list li {
+        width: 12.5%;
+        font-size: 12px;
+    }
+    .no-list li {
+        float: left;
+        width: 25%;
+        padding: 10px;
+        font-size: 15px;
+        line-height: 1.4;
+        text-align: center;
+        border: 1px solid #FFF;
+        background-color: #e2e7ec;
+    }
+    .no-list li.success {
+        background-color: green;
+        color: white;
+        font-weight: bold;
+    }
+    .no-list li.success > a {
+        color: white;
+    }
+    .no-list li.ragu {
+        background-color: #f89406;
+        color: white;
+        font-weight: bold;
+    }
+    .no-list li.ragu > a {
+        color: white;
+    }
+    .nomor-navigasi ul.no-list {
+        width: 130px;
+        height: 700px;
+        overflow: auto;
+    }
+    .nomor-navigasi.affix {
+        margin-top: 5px;
+    }
+    .clock.affix {
+        margin-top: -50px;
+        margin-left: 60px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="wrap">
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span6">
+                <h1 class="title">{{ data.tugas.judul }}</h1>
+            </div>
+            <div class="span6">
+                <ul class="unstyled inline pull-right user-info">
+                    <li><b>{{ nama_panggilan(get_sess_data('user', 'nama')) }}</b></li>
+                    <li><img src="{{ get_url_image_session(get_sess_data('user', 'foto'), 'medium', get_sess_data('user', 'jenis_kelamin')) }}" class="nav-avatar img-polaroid img-circle" /></li>
+                </ul>
+            </div>
+        </div>
+        <hr class="hr-top">
+        <div class="wrap-content">
+            <div class="content">
+                <div class="row-fluid">
+                    {% if data.tugas.type_id != 1 %}
+                    <div class="span8">
+                        <b>Informasi : </b><br>
+                        {{ data.tugas.info|raw }}
+                    </div>
+                    <div class="span4">
+                        <div class="pull-right clock" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+                            <div class="box-show-hide-countdown">
+                                {% set hide_countdown = sess_hide_countdown('get', data.tugas.id) %}
+                                {% if hide_countdown == 1 %}
+                                    <a href="javascript:void(0)" onclick="show_countdown()" class="text-muted"><i class="icon icon-eye-open"></i> TAMPILKAN WAKTU</a>
+                                {% else %}
+                                    <a href="javascript:void(0)" onclick="hide_countdown()" class="text-muted"><i class="icon icon-eye-close"></i> SEMBUNYIKAN WAKTU</a>
+                                {% endif %}
+                            </div>
+                            <div class="iosl-theme-wrapper countdown" {{ (hide_countdown == 1) ? 'style="display:none;"' }}>
+                                <div class="iosl-theme">
+                                    <ul>
+                                        <li><p><span><em><b class="hours">00</b><i class="hoursSlider"><u>00</u><u>00</u></i></em></span></p></li>
+                                        <li><p><span><em><b class="minutes">00</b><i class="minutesSlider"><u>00</u><u>00</u></i></em></span></p></li>
+                                        <li><p><span><em><b class="seconds">00</b><i class="secondsSlider"><u>00</u><u>00</u></i></em></span></p></li>
+                                    </ul>
+                                    <div class="jC-clear"></div>
+                                    <p class="jCtext">
+                                        <span><em class="textSeconds">DETIK</em></span>
+                                        <span><em class="textMinutes">MENIT</em></span>
+                                        <span><em class="textHours">JAM</em></span>
+                                    </p>
+                                    <div class="jC-clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="span6">
+                        <p><b>Upload File Tugas Anda : </b></p>
+                        <div class="well well-sm">
+                            {{ form_open_multipart('tugas/submit_upload/' ~ data.tugas.id ~ '/' ~ data.unix_id)|raw }}
+                            <input type="file" name="userfile">
+                            <hr class="hr1">
+                            <div class="row-fluid">
+                                <div class="span3">
+                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                </div>
+                                <div class="span9">
+                                    {{ get_flashdata('upload')|raw }}
+                                </div>
+                            </div>
+                            {{ form_close()|raw }}
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <b>Informasi Tugas : </b><br>
+                        {{ data.tugas.info|raw }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if data.tugas.type_id == 3 %}
+                    <div class="row-fluid">
+                        <div class="span10">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:40px;">No</th>
+                                        <th>Pertanyaan dan Pilihan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for no, p in data.pertanyaan %}
+                                    <tr id="pertanyaan-{{ p.id }}">
+                                        <td><b>{{ no }}.</b></td>
+                                        <td>
+                                            <div class="pertanyaan">
+                                                {{ p.pertanyaan|raw }}
+                                            </div>
+
+                                            <div id="pilihan-{{ p.id }}">
+                                                <table class="table table-condensed table-striped">
+                                                    <tbody>
+                                                        {% for pil in p.pilihan if pil.konten is not empty %}
+                                                        <tr>
+                                                            <td style="width:30px;"><label class="label-radio"><input {{ (is_pilih(data.jawaban, p.id, pil.id)) ? 'checked' }} type="radio" name="pilihan-{{ p.id }}" value="{{ pil.urutan }}" onclick="update_ganda_custom({{ data.tugas.id }}, {{ p.id }}, {{ pil.id }})" class="radio"> {{ get_abjad(loop.index) }}</label></td>
+                                                            <td>
+                                                                {{ pil.konten|raw }}
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+
+                                                        {% if data.jawaban[p.id] is not empty %}
+                                                        <tr id="ragu-{{ p.id }}" class="warning">
+                                                            <td colspan="2">
+                                                                <label class="checkbox">
+                                                                    <input type="checkbox" name="ragu" onclick="update_ragu(this.checked, {{ data.tugas.id }}, {{ p.id }})" {{ (data.ragu is not empty and in_array(p.id, data.ragu)) ? 'checked' }}> <b>Masih ragu-ragu</b>
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                            {{ pagination|raw }}
+
+                            {% if tampil_btn_submit == 1 %}
+                            <div class="well well-sm">
+                                <p class="p-info">Periksa kembali jawaban Anda sebelum mengakhiri pengerjaan tugas ini.</p>
+                                <button type="button" class="btn btn-large btn-primary" data-toggle="modal" data-target="#selesai-mengerjakan">
+                                    Selesai Mengerjakan
+                                </button>
+                            </div>
+                            {% endif %}
+
+                            <div class="modal fade" id="selesai-mengerjakan" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            Anda yakin ingin mengakhiri pengerjaan tugas ini?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Nanti Dulu</button>
+                                            <a class="btn btn-primary" href="{{ site_url('tugas/finish/' ~ data.tugas.id ~ '/' ~ data.unix_id) }}" id="btn-submit">Ya, Saya Sudah Selesai</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span2">
+                            <div class="nomor-navigasi">
+                                <ul class="no-list">
+                                    {% for no, p_id in data.pertanyaan_id %}
+                                        {% set no_class = "" %}
+                                        {% if data.ragu is not empty and in_array(p_id, data.ragu) %}
+                                            {% set no_class = "ragu" %}
+                                        {% elseif data.jawaban[p_id] is not empty %}
+                                            {% set no_class = "success" %}
+                                        {% endif %}
+                                        <li id="no-pertanyaan-{{ p_id }}" class="{{ no_class }}"><a href="{{ site_url('plugins/custom_tugas/kerjakan/' ~ data.tugas.id ~ '/' ~ halaman[p_id] ~ '#pertanyaan-' ~ p_id) }}">{{ no }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+
+                {% if data.tugas.type_id == 2 %}
+                    {{ form_open('plugins/custom_tugas/submit_essay/' ~ data.tugas.id ~ '/' ~ data.unix_id, {'id' : 'form-essay'})|raw }}
+                    <input type="hidden" id="str_id" value="{{ data.str_id }}">
+                    <table class="table datatable">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th>Pertanyaan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for no, p in data.pertanyaan %}
+                            <tr id="pertanyaan-{{ p.id }}">
+                                <td><b>{{ no }}.</b></td>
+                                <td>
+                                    <div class="pertanyaan">
+                                        {{ p.pertanyaan|raw }}
+                                    </div>
+
+                                    <textarea name="jawaban[{{ p.id }}]" id="jawaban-{{ p.id }}" class="texteditor">{{ get_jawaban(data.jawaban, p.id)|raw }}</textarea>
+
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {{ pagination|raw }}
+
+                    <div id="info-ajax-href"></div>
+
+                    {% if tampil_btn_submit == 1 %}
+                    <div class="well well-sm">
+                        <p class="p-info">Periksa kembali jawaban Anda sebelum mengahiri pengerjaan tugas ini.</p>
+                        <button type="button" class="btn btn-large btn-primary" data-toggle="modal" data-target="#selesai-mengerjakan">
+                            Selesai Mengerjakan
+                        </button>
+                    </div>
+                    {% endif %}
+
+                    {{ form_close()|raw }}
+
+                    <div class="modal fade" id="selesai-mengerjakan" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    Anda yakin ingin mengahiri pengerjaan tugas ini?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Nanti Dulu</button>
+                                    <button type="button" class="btn btn-primary" id="btn-submit">Ya, Saya Sudah Selesai</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% if data.tugas.type_id != 1 %}
+<input type="hidden" id="process-submit" value="0">
+<input type="hidden" id="tugas_id" value="{{ data.tugas.id }}">
+<input type="hidden" id="type_id" value="{{ data.tugas.type_id }}">
+<input type="hidden" id="sisa_menit" value="{{ data.sisa_menit }}">
+<input type="hidden" id="finish_url" value="{{ site_url('plugins/custom_tugas/finish/' ~ data.tugas.id ~ '/' ~ data.unix_id) }}">
+<input type="hidden" id="siswa_id" value="{{ get_sess_data('user', 'id') }}">
+{% endif %}
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "layout-print.html" %}
+
+{% block title %}
+Analisis Soal - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th width="7%">No.</th>
+            <th>Pertanyaan dan Pilihan</th>
+            <th width="18%">Hasil</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in pertanyaan %}
+        <tr id="pertanyaan-{{ p.id }}">
+            <td>
+                <b>{{ loop.index }}.</b>
+            </td>
+            <td>
+                <div class="pertanyaan">
+                    {{ p.pertanyaan|raw }}
+                </div>
+
+                <div id="pilihan-{{ p.id }}">
+                    <table class="table table-condensed table-striped">
+                        <tbody>
+                            {% for pil in p.pilihan if pil.konten is not empty %}
+                            <tr>
+                                <td style="width:15px;"><b>{{ get_abjad(pil.urutan) }}</b></td>
+                                <td>
+                                    {{ pil.konten|raw }}
+
+                                    <ul class="unstyled inline" style="margin-bottom: 0px;margin-left: -5px;">
+                                        {% if pil.kunci == 1 %}
+                                            <li><small class="text-warning"><i class="icon icon-star"></i> Kunci Jawaban</small></li>
+                                        {% endif %}
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </td>
+            <td>
+                {% if analisis[p.id]['kategori'] == 'sulit' %}
+                    {% set text_class = 'label-warning' %}
+                {% elseif analisis[p.id]['kategori'] == 'sedang' %}
+                    {% set text_class = 'label-info' %}
+                {% elseif analisis[p.id]['kategori'] == 'mudah' %}
+                    {% set text_class = 'label-success' %}
+                {% else %}
+                    {% set text_class = '' %}
+                {% endif %}
+
+                <b class="label {{ text_class }}">{{ analisis[p.id]['kategori']|upper }}</b>
+
+                <br><br>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>Jawab Benar</td>
+                            <td>{{ analisis[p.id]['benar'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>Penjawab</td>
+                            <td>{{ analisis[p.id]['dari'] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

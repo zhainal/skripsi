@@ -1,0 +1,46 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Import Soal - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('tugas', 'Tugas')|raw }} / {{ anchor('tugas/manajemen_soal/' ~ tugas.id, 'Manajemen Soal Tugas')|raw }} / Import Excel</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('bank')|raw }}
+
+        {% if tugas.type_id == 3 %}
+        <p>
+            <b>Contoh format excel untuk soal pilihan ganda:</b><br>
+            <img src="{{ base_url_plugins('src/bank_soal/img/import-excel.PNG') }}" class="img img-polaroid">
+        </p>
+        {% elseif tugas.type_id == 2 %}
+        <p>
+            <b>Contoh format excel untuk soal essay:</b><br>
+            <img src="{{ base_url_plugins('src/bank_soal/img/import-excel-essay.PNG') }}" class="img img-polaroid">
+        </p>
+        {% endif %}
+        <br>
+
+        {{ form_open_multipart('plugins/bank_soal/import_excel_soal_tugas/' ~ tugas.id, {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">File (xls) <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="file" name="userfile">
+                    <br>{{ upload_error|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Import</button>
+                    <a href="{{ site_url('tugas/manajemen_soal/' ~ tugas.id) }}" class="btn btn-default">Kembali</a>
+                </div>
+            </div>
+        {{ form_close()|raw }}
+
+    </div>
+</div>
+{% endblock %}

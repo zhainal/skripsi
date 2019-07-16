@@ -1,0 +1,73 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+List Kelompok - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('plugins/tugas_kelompok', 'Tugas Kelompok')|raw }} / List Kelompok</h3>
+    </div>
+    <div class="module-body">
+        <div class="bs-callout bs-callout-info">
+            <div class="btn-group pull-right" style="margin-top:-5px;">
+                {{ anchor('plugins/tugas_kelompok/edit/' ~ tugas.id ~ '/' ~ enurl_redirect(current_url()), '<i class="icon icon-edit"></i> Edit Tugas', {'class' : 'btn btn-default'})|raw }}
+                {% if tugas.status != 2 %}
+                    {{ anchor('plugins/tugas_kelompok/terbitkan/' ~ tugas.id ~ '/' ~ enurl_redirect(current_url()), '<i class="icon-ok"></i> Terbitkan', {'class' : 'btn btn-success btn-small'})|raw }}
+                {% else %}
+                    {{ anchor('plugins/tugas_kelompok/tutup/' ~ tugas.id ~ '/' ~ enurl_redirect(current_url()), '<i class="icon-minus"></i> Tutup', {'class' : 'btn btn-danger btn-small'})|raw }}
+                {% endif %}
+            </div>
+
+            {% include 'tk-info-tugas.html' %}
+
+        </div>
+        <br>
+        {{ get_flashdata('tugas')|raw }}
+        <div class="btn-group">
+            <a class="btn btn-primary" href="{{ site_url('plugins/tugas_kelompok/kelompok/' ~ tugas.id ~ '/add') }}">Tambah Kelompok</a>
+        </div>
+
+        <br><br>
+        <table class="table table-striped table-bordered datatable">
+            <thead>
+                <tr>
+                    <th width="6%">#ID</th>
+                    <th>Kelompok</th>
+                    <th width="35%">Anggota</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for k in results %}
+                <tr>
+                    <td>#{{ k.id }}</td>
+                    <td>
+                        {{ k.nama }}
+                        <hr style="margin-top: 5px; margin-bottom: 5px;">
+                        {{ k.intruksi|raw }}
+                    </td>
+                    <td>
+                        <ul>
+                        {% for a in k.anggota %}
+                            <li><a href="{{ a.siswa.link_profil }}" target="_blank">{{ a.siswa.nis }} - {{ a.siswa.nama }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{{ site_url('plugins/tugas_kelompok/kelompok/' ~ tugas.id ~ '/edit/' ~ k.id) }}" class="btn btn-xs btn-default"><i class="icon icon-edit"></i> Edit</a>
+
+                            {% if k.jml_kerjaan > 0 %}
+                            <a href="{{ site_url('plugins/tugas_kelompok/koreksi/' ~ tugas.id ~ '/' ~ k.id) }}" target="_blank" class="btn btn-xs btn-primary"><i class="icon icon-eye-open"></i> Koreksi</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

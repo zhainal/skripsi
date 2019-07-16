@@ -1,0 +1,32 @@
+<b><a class="as-link" data-toggle="collapse" data-target="#detail-tugas"><i class="icon-info-sign" style="line-height: 0px;"></i> {{ tugas.judul|upper }}</a></b>
+
+<div id="detail-tugas" class="collapse" style="margin-top: 5px;">
+    <table class="table">
+        <tr>
+            <th width="20%">Judul</th>
+            <td>{{ tugas.judul }}</td>
+        </tr>
+        <tr>
+            <th>Mata Pelajaran</th>
+            <td>{{ tugas.mapel.nama }}</td>
+        </tr>
+        <tr>
+            <th>Kelas</th>
+            <td>
+                {{ tugas.kelas.nama }}
+            </td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>
+                {{ tugas.label_status|upper }}
+            </td>
+        </tr>
+        <tr>
+            <th>Pembuat</th>
+            <td>
+                <a href="{{ tugas.pengajar.link_profil }}">{{ tugas.pengajar.nama }}</a>
+            </td>
+        </tr>
+    </table>
+</div>

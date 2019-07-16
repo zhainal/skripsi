@@ -1,0 +1,55 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Import Bank Soal - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('tugas', 'Tugas')|raw }} / {{ anchor('plugins/bank_soal', 'Bank Soal')|raw }} / Import Excel</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('bank')|raw }}
+
+        <p>
+            <b>Contoh format excel untuk soal pilihan ganda:</b><br>
+            <img src="{{ base_url_plugins('src/bank_soal/img/import-excel.PNG') }}" class="img img-polaroid">
+        </p>
+        <p>
+            <b>Contoh format excel untuk soal essay:</b><br>
+            <img src="{{ base_url_plugins('src/bank_soal/img/import-excel-essay.PNG') }}" class="img img-polaroid">
+        </p>
+        <br>
+
+        {{ form_open_multipart('plugins/bank_soal/import_excel', {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">Mata Pelajaran <span class="text-error">*</span></label>
+                <div class="controls">
+                    <select name="mapel_id">
+                        <option value="">--pilih--</option>
+                        {% for m in mapel %}
+                        <option value="{{ m.id }}" {{ set_select('mapel_id', m.id, (p.mapel_id == m.id) ? TRUE) }}>{{ m.nama }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>{{ form_error('mapel_id')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">File (xls) <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="file" name="userfile">
+                    <br>{{ upload_error|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Import</button>
+                    <a href="{{ site_url('plugins/bank_soal') }}" class="btn btn-default">Kembali</a>
+                </div>
+            </div>
+        {{ form_close()|raw }}
+
+    </div>
+</div>
+{% endblock %}

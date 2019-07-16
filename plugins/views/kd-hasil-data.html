@@ -1,0 +1,73 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Hasil Data - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('plugins/pencapaian_kd', 'Analisis Pencapaian Kompetensi Dasar')|raw }} / Hasil Data</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('kd')|raw }}
+
+        <table class="table table-bordered datatable table-striped">
+            <thead>
+                <tr>
+                    <th width="10%">Analisis ID</th>
+                    <th>Tugas & Kompetensi Dasar</th>
+                    <th width="15%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>#{{ r.id }}</td>
+                <td>
+                    ID : {{ r.tugas.id }} - {{ r.tugas.judul }} - {{ r.tugas.mapel.nama }} - {{ r.tugas.nama_kelas }}<br>
+                    <hr style="margin-top:5px; margin-bottom: 5px;">
+                    KD : {{ r.kd_mapel_nama }}
+                    <br>Nilai Minimal Lulus : {{ r.nilai_lulus }}
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a class="btn btn-xs btn-default" href="{{ site_url('plugins/pencapaian_kd/edit/' ~ r.id ~ '/' ~ enurl_redirect(current_url())) }}"><i class="icon icon-edit"></i> Edit</a>
+                        <a class="btn btn-xs btn-primary" href="{{ site_url('plugins/pencapaian_kd/kd_no_soal/' ~ r.id) }}"><i class="icon icon-th"></i> KD No.Soal</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+
+        {{ form_open('', {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">Lihat Data</label>
+                <div class="controls">
+                    <select name="tipe" id="tipe">
+                        <option value="analisis_kd">ANALISIS KD</option>
+                        {% for k in kelas_nilai %}
+                        <option value="{{ k.id }}">{{ k.nama }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="button" class="btn btn-primary" id="btn-lihat">Lihat</button>
+                </div>
+            </div>
+        {{ form_close()|raw }}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).on('click', '#btn-lihat', function() {
+        var tipe = $("#tipe").val();
+        window.open(site_url + '/plugins/pencapaian_kd/hasil_data/{{ r.id }}/' + tipe, '_blank');
+    });
+</script>
+{% endblock %}

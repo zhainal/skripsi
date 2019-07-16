@@ -1,0 +1,122 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Manajemen Soal Tugas - {{ parent() }}
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .box-area-pertanyaan {
+        padding: 15px;
+        background-color: #F6F6F6;
+        border-radius: 3px;
+    }
+    .box-pilihan {
+        padding: 5px 0px 15px 30px;
+        border-radius: 3px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('tugas', 'Tugas')|raw }} / Manajemen Soal Tugas</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('tugas')|raw }}
+
+        <div class="bs-callout bs-callout-info">
+            <div class="btn-group pull-right" style="margin-top:-5px;">
+                {{ anchor('plugins/custom_tugas/edit/' ~ tugas.id ~ '/' ~ enurl_redirect(current_url()), '<i class="icon icon-edit"></i> Edit Tugas', {'class' : 'btn btn-default'})|raw }}
+                {% if tugas.aktif == 0 %}
+                    {{ anchor('tugas/terbitkan/' ~ tugas.id ~ '/' ~ enurl_redirect(current_url()), '<i class="icon-ok"></i> Terbitkan', {'class' : 'btn btn-success btn-small'})|raw }}
+                {% elseif tugas.aktif == 1 %}
+                    {{ anchor('tugas/tutup/' ~ tugas.id ~ '/' ~ enurl_redirect(current_url()), '<i class="icon-minus"></i> Tutup', {'class' : 'btn btn-danger btn-small'})|raw }}
+                {% endif %}
+            </div>
+
+            {% include 'info-tugas.html' %}
+
+        </div>
+        <br>
+
+        <div class="dropdown pull-right">
+            <a class="dropdown-toggle btn btn-default" id="drop4" role="button" data-toggle="dropdown" href="#">Berikutnya <b class="caret"></b></a>
+            <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ site_url('plugins/bank_soal') }}">Kelola Bank Soal</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ site_url('plugins/cetak_soal/cetak/print/' ~ tugas.id) }}">Print Soal</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" target="_blank" href="{{ site_url('plugins/cetak_soal/cetak/word/' ~ tugas.id) }}">Export Soal</a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <a href="javascript:void(0)" class="btn btn-primary disable-on-add-pertanyaan {{ (tugas.type_id == 3) ? 'btn-tambah-pertanyaan' : 'btn-tambah-pertanyaan-essay' }}" title="Tambah Pertanyaan">Tambah Pertanyaan</a>
+            <a href="{{ site_url('tugas/copy_soal/' ~ tugas.id) }}" class="disable-on-add-pertanyaan btn btn-primary iframe-copy-pertanyaan" title="Copy Pertanyaan">Copy Soal Tugas</a>
+            <a href="{{ site_url('plugins/bank_soal/copy_soal_bank/' ~ tugas.id) }}" class="disable-on-add-pertanyaan btn btn-primary iframe-bank-soal iframe-copy-pertanyaan" title="Bank Soal">Copy Bank Soal</a>
+            <!--<a href="{{ site_url('plugins/bank_soal/import_excel_soal_tugas/' ~ tugas.id) }}" class="disable-on-add-pertanyaan btn btn-primary" title="Import Excel">Import Excel</a>-->
+        </div>
+        <br><br>
+
+        {{ form_open('plugins/bank_soal/add_soal/' ~ tugas.id, {'id': 'form-tambah-pertanyaan'})|raw }}
+            <div class="box-new-soal"></div>
+        {{ form_close()|raw }}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="5%">No</th>
+                    <th>Pertanyaan {{ (tugas.type_id == 3) ? ' dan Pilihan' }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pertanyaan %}
+                <tr id="pertanyaan-{{ p.id }}">
+                    <td><b>{{ p.urutan }}.</b></td>
+                    <td>
+                        <div class="pertanyaan">
+                            <div class="btn-group pull-right" style="margin-left:10px;">
+                                <a href="{{ site_url('plugins/bank_soal/edit_soal/' ~ tugas.id ~ '/' ~ p.id ~ '/' ~ enurl_redirect(current_url())) }}" class="btn btn-small btn-default"><i class="icon-edit"></i> Edit</a>
+                                <a onclick="return confirm('Anda yakin ingin menghapus?')" href="{{ site_url('tugas/hapus_soal/' ~ tugas.id ~ '/' ~ p.id ~ '/' ~ enurl_redirect(current_url())) }}" class="btn btn-small btn-default"><i class="icon-trash"></i> Hapus</a>
+                            </div>
+
+                            {{ p.pertanyaan|raw }}
+                        </div>
+
+                        {% if tugas.type_id == 3 %}
+                        <br>
+                        <div id="pilihan-{{ p.id }}">
+                            <table class="table table-condensed">
+                                <tbody>
+                                    {% for pil in p.pilihan if pil.konten is not empty %}
+                                    <tr {{ (pil.kunci == 1) ? 'style="background-color: #fbfbfb;margin-left: 10px;"' }}>
+                                        <td width="3%"><b>({{ get_abjad(pil.urutan) }})</b></td>
+                                        <td>
+                                            {% if pil.kunci == 1 %}
+                                            <span class="text-success pull-right"><i class="icon-ok"></i> Kunci Jawaban</span>
+                                            {% endif %}
+                                            {{ pil.konten|raw }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        {{ pagination|raw }}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{{ get_texteditor()|raw }}
+<script type="text/javascript" src="{{ base_url_plugins('src/bank_soal/js/pertanyaan.js') }}"></script>
+{% endblock %}

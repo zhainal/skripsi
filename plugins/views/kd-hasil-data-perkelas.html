@@ -1,0 +1,87 @@
+{% extends "kd-layout-hasil.html" %}
+
+{% block title %}
+Hasil Data - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<center>
+    <h5>
+        ANALISIS HASIL {{ r.tugas.judul|upper }}
+        <br>{{ r.tugas.mapel.nama|upper }} - {{ kelas_terpilih.nama|upper }}
+    </h5>
+</center>
+
+<table class="table table-bordered table-condensed table-hover">
+    <head>
+        <tr bgcolor="#f5f5f5">
+            <th rowspan="3">NIS</th>
+            <th>KUNCI</th>
+            {% for k in list_kunci %}
+            <th>{{ get_abjad(k) }}</th>
+            {% endfor %}
+            <th rowspan="2" colspan="2">Jumlah</th>
+            <th rowspan="3">Nilai</th>
+            <th rowspan="3">L / TL</th>
+        </tr>
+        <tr bgcolor="#f5f5f5">
+            <th>NO.SOAL</th>
+            {% for k in list_kunci %}
+            <th>{{ loop.index }}</th>
+            {% endfor %}
+        </tr>
+        <tr bgcolor="#f5f5f5">
+            <th>NAMA</th>
+            <th colspan="{{ count(list_kunci) }}"><center>JAWABAN YANG DIANALISIS</center></th>
+            <th>Benar</th>
+            <th>Salah</th>
+        </tr>
+    </head>
+    <tbody>
+        {% set jml_l = 0 %}
+        {% set jml_tl = 0 %}
+        {% for d in data_nilai %}
+        <tr>
+            <td>{{ d.siswa.nis }}</td>
+            <td>{{ d.siswa.nama }}</td>
+
+            {% for key, k in list_kunci %}
+            <td>
+                {% if d['history']['value']['jawaban'][key] is not empty %}
+                    {% set pilihan_siswa = plugin_helper('pencapaian_kd', 'kd_get_urutan_pilihan', [d['history']['value']['jawaban'][key], key]) %}
+
+                    {% if pilihan_siswa == k %}
+                        {{ get_abjad(pilihan_siswa) }}
+                    {% else %}
+                        <u>{{ get_abjad(pilihan_siswa) }}</u>
+                    {% endif %}
+                {% endif %}
+            </td>
+            {% endfor %}
+
+            <td>{{ d.history.value.jml_benar }}</td>
+            <td>{{ d.history.value.jml_salah }}</td>
+            <td>{{ round(d.history.value.nilai, 2) }}</td>
+            <td>
+                {% if round(d.history.value.nilai, 2) >= r.nilai_lulus %}
+                    L
+                    {% set jml_l = jml_l + 1 %}
+                {% else %}
+                    TL
+                    {% set jml_tl = jml_tl + 1 %}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br>
+{% if mode is empty %}
+<a href="{{ site_url('plugins/pencapaian_kd/hasil_data/' ~ r.id ~ '/' ~ kelas_terpilih.id ~ '?mode=excel') }}" class="btn btn-primary pull-right">Cetak Excel</a>
+{% endif %}
+
+<b>JUMLAH LULUS (L) : {{ jml_l }}</b><br>
+<b>JUMLAH TIDAK LULUS (TL) : {{ jml_tl }}</b><br>
+
+{% endblock %}

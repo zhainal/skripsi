@@ -1,0 +1,70 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Import Excel Siswa - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('siswa', 'Data Siswa')|raw }} / Import Excel</h3>
+    </div>
+    <div class="module-body">
+        {{ get_flashdata('siswa')|raw }}
+
+        <b>Contoh format data excel :</b>
+        <img src="{{ base_url_plugins('src/import_export_siswa/img/contoh-inport-excel-siswa.PNG') }}" class="img img-polaroid">
+        <p>Data siswa mulai terbaca mulai baris kedua, baris pertama digunakan untuk judul.</p>
+        Format field :
+        <ul>
+            <li><b>Jenis kelamin</b> : L (Laki-Laki) dan P (Perempuan)</li>
+            <li><b>Tgl Lahir</b> : Tanggal/Bulan/Tahun</li>
+            <li><b>Agama</b> : Islam, Kristen, Katolik, Hindu, Budha</li>
+        </ul>
+
+        {{ form_open_multipart('plugins/import_export_siswa/import_excel', {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">Kelas <span class="text-error">*</span></label>
+                <div class="controls">
+                    <select name="kelas_id">
+                        <option value="">--pilih--</option>
+                        {% for k in kelas %}
+                        <option value="{{ k.id }}" {{ set_select('kelas_id', k.id) }}>{{ k.nama }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>{{ form_error('kelas_id')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Domain Username <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="text" id="default_username" name="default_username" class="span4" value="{{ set_value('default_username', 'man.sch.id') }}">
+                    <div>Berfungsi untuk membuat username untuk siswa berdasarkan NIS, misalkan NIS siswa 12345 dan domain username adalah man.sch.id, maka username untuk siswa tersebut adalah 12345@man.sch.id</div>
+                    {{ form_error('default_username')|raw }}
+                    {{ error_domain|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Default Password</label>
+                <div class="controls">
+                    <p style="margin-top: 5px;">Jika kosong, password akan diambil dari NIS siswa</p>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">File Excel (xls) <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="file" name="userfile">
+                    {{ error_upload|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Import</button>
+                    <a class="btn btn-default" href="{{ site_url('siswa') }}">Kembali</a>
+                </div>
+            </div>
+        {{ form_close()|raw }}
+
+    </div>
+</div>
+{% endblock %}

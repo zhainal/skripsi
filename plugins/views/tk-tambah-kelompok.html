@@ -1,0 +1,116 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Tambah Kelompok - {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('plugins/tugas_kelompok', 'Tugas Kelompok')|raw }} / {{ anchor('plugins/tugas_kelompok/kelompok/' ~ tugas.id, 'List Kelompok')|raw }} / Tambah Kelompok</h3>
+    </div>
+    <div class="module-body">
+
+        {{ form_open_multipart('plugins/tugas_kelompok/kelompok/' ~ tugas.id ~ '/add', {'class' : 'form-horizontal row-fluid'})|raw }}
+            <div class="control-group">
+                <label class="control-label">Nama <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="text" name="nama" class="span7" value="{{ set_value('nama') }}">
+                    <br>{{ form_error('nama')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Intruksi / Informasi</label>
+                <div class="controls">
+                    <textarea name="intruksi" class="texteditor">{{ set_value('intruksi')|raw }}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Anggota <span class="text-error">*</span></label>
+                <div class="controls">
+                    <input type="text" id="cari-siswa" class="span6" placeholder="Cari siswa {{ tugas.kelas.nama }}">
+                    <br><br>
+                    <table class="table table-bordered table-striped table-condensed" id="table-anggota">
+                        <thead>
+                            <tr>
+                                <th width="15%">NIS</th>
+                                <th>Nama</th>
+                                <th width="20%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <br>{{ form_error('anggota')|raw }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Simpan Kelompok</button>
+                    <a href="{{ site_url('plugins/tugas_kelompok/kelompok/' ~ tugas.id) }}" class="btn btn-default">Kembali</a>
+                </div>
+            </div>
+        {{ form_close()|raw }}
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    var tugas_id = "{{ tugas.id }}";
+
+    $('#cari-siswa').autocomplete({
+        serviceUrl: site_url + '/plugins/tugas_kelompok/ajax/cari-siswa?kelas_id={{ tugas.kelas.id }}',
+        onSelect: function (suggestion) {
+            add_to_session(suggestion.id);
+            $(this).val("");
+        }
+    });
+
+    function add_to_session(siswa_id) {
+        $.ajax({
+            type: "POST",
+            url: site_url + '/plugins/tugas_kelompok/ajax/add-to-sess',
+            data: {'siswa_id' : siswa_id, 'tugas_id' : tugas_id},
+            success: function (data) {
+                if (data == "0") {
+                    alert("Siswa sudah ada pada kelompok lain.");
+                } else {
+                    show_sess_anggota();
+                }
+            }
+        });
+    }
+
+    function show_sess_anggota()
+    {
+        $("#table-anggota tbody").empty();
+        $.ajax({
+            type: "GET",
+            url: site_url + '/plugins/tugas_kelompok/ajax/get-add-sess',
+            data: {'tugas_id' : tugas_id},
+            success: function (data) {
+                var hasil = $.parseJSON(data);
+                $.each(hasil, function (i, val) {
+                    $("#table-anggota tbody").append("<tr><td>" + val.nis + "</td><td>" + val.nama + "</td><td><a href='javascript:void(0)' class='delete-sess-anggota' data-id='" + val.id + "'>Hapus</a></td></tr>");
+                })
+            }
+        });
+    }
+
+    show_sess_anggota();
+
+    $(document).on('click', '.delete-sess-anggota', function() {
+        var conf = confirm('Anda yakin ingin menghapus?');
+        if (conf) {
+            $.ajax({
+                type: "POST",
+                url: site_url + '/plugins/tugas_kelompok/ajax/delete-add-sess',
+                data: {'tugas_id' : tugas_id, 'siswa_id' : $(this).data('id')},
+                success: function() {
+                    show_sess_anggota();
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

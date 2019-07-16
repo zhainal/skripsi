@@ -1,0 +1,135 @@
+{% extends "layout-private.html" %}
+
+{% block title %}
+Tugas - {{ parent() }}
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .box-area-pertanyaan {
+        padding: 15px;
+        background-color: #F6F6F6;
+        border-radius: 3px;
+    }
+    .box-pilihan {
+        padding: 5px 0px 15px 30px;
+        border-radius: 3px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <div class="module-head">
+        <h3>{{ anchor('tugas', 'Tugas')|raw }} / Bank Soal</h3>
+    </div>
+    <div class="module-body">
+        {% if is_admin() %}
+        {{ anchor('plugins/bank_soal/pengaturan', '<i class="icon-wrench"></i> Pengaturan', {'class' : 'btn btn-default pull-right'})|raw }}
+        {% endif %}
+        <div class="btn-group">
+            <a href="javascript:void(0)" class="btn btn-primary btn-tambah-pertanyaan disable-on-add-pertanyaan">Tambah Soal Ganda</a>
+            <a href="javascript:void(0)" class="btn btn-primary btn-tambah-pertanyaan-essay disable-on-add-pertanyaan">Tambah Soal Essay</a>
+            {{ anchor('plugins/bank_soal/copy_soal_tugas', 'Copy Soal Tugas', {'class' : 'btn btn-primary iframe-copy-soal-tugas disable-on-add-pertanyaan'})|raw }}
+            <!--{{ anchor('plugins/bank_soal/import_excel', 'Import Excel', {'class' : 'btn btn-primary disable-on-add-pertanyaan'})|raw }}-->
+        </div>
+        <div class="bs-callout bs-callout-info" style="padding-bottom: 0px;margin-top: 10px;">
+            <form method="post" action="{{ site_url('plugins/bank_soal/search') }}">
+                <select name="mapel_id" class="form-control">
+                    <option value="0">Semua Mata Pelajaran</option>
+                    {% for m in mapel %}
+                    <option value="{{ m.id }}" {{ (mapel_id == m.id) ? 'selected' }}>{{ m.nama }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" name="q" placeholder="cari soal..." value="{{ keyword }}">
+                <button type="submit" class="btn btn-primary" style="margin-top:-10px;"><i class="icon-search"></i></button>
+            </form>
+        </div>
+        <br>
+        {{ get_flashdata('bank')|raw }}
+
+        {{ form_open('plugins/bank_soal/simpan', {'id': 'form-tambah-pertanyaan'})|raw }}
+            <div class="box-new-soal"></div>
+        {{ form_close()|raw }}
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th width="5%">ID</th>
+                    <th>Pertanyaan</th>
+                    <th width="15%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pertanyaan %}
+                <tr>
+                    <td><b>{{ p.id }}</b></td>
+                    <td>
+                        {{ p.pertanyaan|raw }}
+
+                        {% if p.kunci is not empty %}
+                        <table class="table table-condensed" style="margin-bottom: 10px;margin-top:10px;">
+                            <tr>
+                                <td width="5%"><b>A</b></td>
+                                <td>
+                                    {{ p.pilihan_a|raw }}
+                                    {% if p.kunci == 'a' %}
+                                    <div style="display:block;"><span class="text-warning"><i class="icon icon-star"></i> Kunci Jawaban</span></div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>B</b></td>
+                                <td>
+                                    {{ p.pilihan_b|raw }}
+                                    {% if p.kunci == 'b' %}
+                                    <div style="display:block;"><span class="text-warning"><i class="icon icon-star"></i> Kunci Jawaban</span></div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>C</b></td>
+                                <td>
+                                    {{ p.pilihan_c|raw }}
+                                    {% if p.kunci == 'c' %}
+                                    <div style="display:block;"><span class="text-warning"><i class="icon icon-star"></i> Kunci Jawaban</span></div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>D</b></td>
+                                <td>
+                                    {{ p.pilihan_d|raw }}
+                                    {% if p.kunci == 'd' %}
+                                    <div style="display:block;"><span class="text-warning"><i class="icon icon-star"></i> Kunci jawaban</span></div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>E</b></td>
+                                <td>
+                                    {{ p.pilihan_e|raw }}
+                                    {% if p.kunci == 'e' %}
+                                    <div style="display:block;"><span class="text-warning"><i class="icon icon-star"></i> Kunci Jawaban</span></div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                        {% endif %}
+                        <div style="display:block;"><b>Pembuat: <a href="{{ p.user.link_profil }}">{{ p.user.nama }}</a></b>, <b>Mata Pelajaran: </b>{{ p.mapel.nama }}</div>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{{ site_url('plugins/bank_soal/edit/' ~ p.id ~ '/' ~ enurl_redirect(current_url())) }}" class="btn btn-small btn-primary"><i class="icon icon-edit"></i> Edit</a>
+                            <a href="{{ site_url('plugins/bank_soal/delete/' ~ p.id ~ '/' ~ enurl_redirect(current_url())) }}" onclick="return confirm('Anda yakin ingin menghapus?')" class="btn btn-small btn-default"><i class="icon icon-trash"></i> Hapus</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        {{ pagination|raw }}
+    </div>
+</div>
+{% endblock %}
