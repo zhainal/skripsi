@@ -15,19 +15,19 @@ Hasil Data - {{ parent() }}
         <table class="table table-bordered datatable table-striped">
             <thead>
                 <tr>
-                    <th width="10%">Analisis ID</th>
-                    <th>Tugas & Kompetensi Dasar</th>
+                    <th width="20%">Tugas</th>
+                    <th>Kompetensi Dasar</th>
                     <th width="15%">Aksi</th>
                 </tr>
             </thead>
             <tbody>
             <tr>
-                <td>#{{ r.id }}</td>
+                <td>{{ r.tugas.judul }} - {{ r.tugas.mapel.nama }} - {{ r.tugas.nama_kelas }}</td>
                 <td>
-                    ID : {{ r.tugas.id }} - {{ r.tugas.judul }} - {{ r.tugas.mapel.nama }} - {{ r.tugas.nama_kelas }}<br>
-                    <hr style="margin-top:5px; margin-bottom: 5px;">
                     KD : {{ r.kd_mapel_nama }}
-                    <br>Nilai Minimal Lulus : {{ r.nilai_lulus }}
+                    <br>
+                    <hr style="margin-top:5px; margin-bottom: 5px;">
+                    <br>Kriteria Kentuntasan Minimal (KKM) : {{ r.nilai_lulus }}
                 </td>
                 <td>
                     <div class="btn-group">

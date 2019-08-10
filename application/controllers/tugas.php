@@ -518,7 +518,7 @@ class Tugas extends MY_Controller
             20,
             $page_no,
             $tugas['id'],
-            'DESC'
+            'ASC'
         );
 
         # jika pilihan ganda

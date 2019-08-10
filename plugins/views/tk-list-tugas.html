@@ -107,7 +107,7 @@ Tugas Kelompok - {{ parent() }}
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="7%">ID</th>
+                    <th width="5%">No</th>
                     <th>Judul</th>
                     <th>Mata Pelajaran</th>
                     {% if is_siswa() == false %}
@@ -121,9 +121,9 @@ Tugas Kelompok - {{ parent() }}
                 </tr>
             </thead>
             <tbody>
-                {% for d in tugas %}
+                {% for no, d in tugas %}
                 <tr class="{{ (d.status == 2) ? 'success' }}">
-                    <td>{{ d.id }}</td>
+                    <td>{{ no }}.</td>
                     <td>
                         {% if is_siswa() %}
                             {{ d.judul }}

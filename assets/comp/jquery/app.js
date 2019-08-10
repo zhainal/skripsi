@@ -558,7 +558,7 @@
                 if (nis == '') {
                     nis = new Date().getTime();
                 }
-                $("#username").val(nis + '@example.sch.id');
+                $("#username").val(nis + '.sch@domain.com');
             } else {
                 $("#username").val('');
             }
@@ -570,7 +570,7 @@
                 if (nip == '') {
                     nip = new Date().getTime();
                 }
-                $("#username").val(nip + '@example.sch.id');
+                $("#username").val(nip + '.sch@domain.com');
             } else {
                 $("#username").val('');
             }

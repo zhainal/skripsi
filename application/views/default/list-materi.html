@@ -25,7 +25,7 @@ Materi - {{ parent() }}
                 {{ form_open('materi')|raw }}
                     <table class="table table-condensed">
                         <tr>
-                            <th  style="border-top: none;">Mapel</th>
+                            <th  style="border-top: none;">Mata Pelajaran</th>
                             <td  style="border-top: none;">
                                 <ul class="unstyled inline" style="margin-left: -5px;">
                                     {% for m in mapel %}
@@ -123,7 +123,7 @@ Materi - {{ parent() }}
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="7%">ID</th>
+                    <th width="5%">No</th>
                     <th>Informasi Materi</th>
                     <th width="15%"></th>
                 </tr>
@@ -153,7 +153,7 @@ Materi - {{ parent() }}
                 {% endif %}
 
                 <tr>
-                    <td><b>{{ m.id }}</b></td>
+                    <td><b>{{ no }}.</b></td>
                     <td>
                         <p><strong class="text-warning">
                             {{ m.judul }}

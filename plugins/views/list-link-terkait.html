@@ -102,9 +102,8 @@ Link Terkait - {{ parent() }}
 
             <table class="table table-striped table-condensed">
                 <tbody>
-                    {% for key, l in links %}
+                    {% for l in links %}
                     <tr>
-                        <td width="5%">{{ loop.index }}.</td>
                         <td><a target="_blank" href="{{ l.link }}">{{ (l.label is not empty) ? l.label : l.link }}</a></td>
                     </tr>
                     {% endfor %}

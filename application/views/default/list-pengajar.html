@@ -111,11 +111,14 @@ Data Pengajar - {{ parent() }}
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="7%">
-                        {% if status_id == 0 or status_id == 2 %}
-                            <input type="checkbox" style="margin-top:-2px;" onclick="filter_pengajar_ch_uch_checkbox(this)">
-                        {% endif %}
-                        ID
+                    <th width="10%">
+                    {% if status_id == 0 or status_id == 2 %}
+                        <input type="checkbox" style="margin-top:-2px;" onclick="filter_pengajar_ch_uch_checkbox(this)">
+                    {% endif %}
+                    No
+                    </th>
+                    <th width="20%">
+                        NIP
                     </th>
                     <th>Informasi Pengajar</th>
                     <th width="22%"></th>
@@ -125,14 +128,17 @@ Data Pengajar - {{ parent() }}
                 {% for no, v in pengajar %}
                 <tr>
                     <td>
-                        {% if status_id == 0 or status_id == 2 %}
-                            <input type="checkbox" name="pengajar_id[]" value="{{ v.id }}" style="margin-top:-2px;">
-                        {% endif %}
-                        <b>{{ v.id }}</b>
+                    {% if status_id == 0 or status_id == 2 %}
+                        <input type="checkbox" name="pengajar_id[]" value="{{ v.id }}" style="margin-top:-2px;">
+                    {% endif %}
+                    {{ no }}.
+                    </td>
+                    <td>
+                        <b>{{ v.nip }}</b>
                     </td>
                     <td>
                         <img style="height:40px;width:40px; margin-right: 10px;" class="img-polaroid img-circle pull-left" src="{{ get_url_image_pengajar(v.foto, 'medium', v.jenis_kelamin) }}">
-                        <b>{{ v.nama }} {{ ((v.nip is not empty) ? '<span class="text-muted">(' ~ v.nip ~ ')</span>')|raw }}</b>
+                        <b>{{ v.nama }} </b>
                         {% set is_admin =  get_row_data('login_model', 'retrieve', [null, null, null, null, v.id], 'is_admin') %}
                         {% if is_admin == 1 %}
                             <span class="label label-warning">Administrator</span>

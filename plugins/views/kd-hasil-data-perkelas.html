@@ -53,7 +53,7 @@ Hasil Data - {{ parent() }}
                     {% if pilihan_siswa == k %}
                         {{ get_abjad(pilihan_siswa) }}
                     {% else %}
-                        <u>{{ get_abjad(pilihan_siswa) }}</u>
+                        <font color="red">{{ get_abjad(pilihan_siswa) }}</font>
                     {% endif %}
                 {% endif %}
             </td>
@@ -67,7 +67,7 @@ Hasil Data - {{ parent() }}
                     L
                     {% set jml_l = jml_l + 1 %}
                 {% else %}
-                    TL
+                    <font color="red">TL</font>
                     {% set jml_tl = jml_tl + 1 %}
                 {% endif %}
             </td>

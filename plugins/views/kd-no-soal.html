@@ -15,19 +15,19 @@ KD Nomor Soal - {{ parent() }}
         <table class="table table-bordered datatable table-striped">
             <thead>
                 <tr>
-                    <th width="10%">Analisis ID</th>
-                    <th>Tugas & Kompetensi Dasar</th>
+                    <th width="20%">Tugas</th>
+                    <th>Kompetensi Dasar</th>
                     <th width="15%">Aksi</th>
                 </tr>
             </thead>
             <tbody>
             <tr>
-                <td>#{{ r.id }}</td>
+                <td>{{ r.tugas.judul }} - {{ r.tugas.mapel.nama }} - {{ r.tugas.nama_kelas }}</td>
                 <td>
-                    ID : {{ r.tugas.id }} - {{ r.tugas.judul }} - {{ r.tugas.mapel.nama }} - {{ r.tugas.nama_kelas }}<br>
-                    <hr style="margin-top:5px; margin-bottom: 5px;">
                     KD : {{ r.kd_mapel_nama }}
-                    <br>Nilai Minimal Lulus : {{ r.nilai_lulus }}
+                    <br>
+                    <hr style="margin-top:5px; margin-bottom: 5px;">
+                    <br>Kriteria Ketuntasan Minimal (KKM) : {{ r.nilai_lulus }}
                 </td>
                 <td>
                     <div class="btn-group">
@@ -74,7 +74,7 @@ KD Nomor Soal - {{ parent() }}
 
                     </td>
                     <td>
-                        <select class="select_kd" data-pertanyaan-id="{{ p.id }}">
+                        <select class="span2 select_kd" data-pertanyaan-id="{{ p.id }}">
                             <option>--pilih--</option>
                             {% for k in r.kd_tugas_kd %}
                             <option value="{{ k.id }}" {{ (k.no_soal_arr.pertanyaan_id is not empty and in_array(p.id, k.no_soal_arr.pertanyaan_id) ? 'selected') }}>{{ k.kd_mapel.nama }}</option>

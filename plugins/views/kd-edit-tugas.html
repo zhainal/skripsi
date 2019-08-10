@@ -20,14 +20,14 @@ Edit Analisis - {{ parent() }}
                     <select name="tugas_id_x" disabled="">
                         <option value="">--pilih--</option>
                         {% for t in tugas_ganda %}
-                        <option value="{{ t.id }}" {{ (r.tugas.id == t.id) ? 'selected' }}>{{ t.id }} - {{ t.judul }}</option>
+                        <option value="{{ t.id }}" {{ (r.tugas.id == t.id) ? 'selected' }}>{{ t.judul }}</option>
                         {% endfor %}
                     </select>
                     <br>{{ form_error('tugas_id')|raw }}
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Nilai Minimal Lulus</label>
+                <label class="control-label">Kriteria Ketuntasan Minimal (KKM)</label>
                 <div class="controls">
                     <input type="text" name="nilai_lulus" value="{{ set_value('nilai_lulus', r.nilai_lulus) }}" style="width: 50px;">
                     <br>{{ form_error('nilai_lulus')|raw }}

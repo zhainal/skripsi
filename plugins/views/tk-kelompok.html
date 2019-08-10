@@ -33,8 +33,7 @@ List Kelompok - {{ parent() }}
         <table class="table table-striped table-bordered datatable">
             <thead>
                 <tr>
-                    <th width="6%">#ID</th>
-                    <th>Kelompok</th>
+                    <th>Nama Kelompok</th>
                     <th width="35%">Anggota</th>
                     <th>Aksi</th>
                 </tr>
@@ -42,7 +41,6 @@ List Kelompok - {{ parent() }}
             <tbody>
                 {% for k in results %}
                 <tr>
-                    <td>#{{ k.id }}</td>
                     <td>
                         {{ k.nama }}
                         <hr style="margin-top: 5px; margin-bottom: 5px;">

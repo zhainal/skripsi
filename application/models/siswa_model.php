@@ -140,7 +140,7 @@ class Siswa_model extends CI_Model
             $where['status_id'] = array($status_id, 'where');
         }
 
-        $orderby = array('id' => 'DESC');
+        $orderby = array('nis' => 'ASC');
         $data = $this->pager->set('siswa', $no_of_records, $page_no, $where, $orderby);
 
         return $data;
@@ -215,7 +215,7 @@ class Siswa_model extends CI_Model
         $pagination    = true
     ) {
         $where = array();
-        $orderby['siswa.id'] = 'DESC';
+        $orderby['siswa.nis'] = 'ASC';
 
         if (!empty($nis)) {
             $nis = (int)$nis;

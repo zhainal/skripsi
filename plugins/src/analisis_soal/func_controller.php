@@ -57,22 +57,22 @@ function index($tugas_id = "")
             }
         }
 
-        # cari persentasenya
+        # menghitung indeks kesukaran
         foreach ($list_jawaban as $pertanyaan_id => &$value) {
             if ($value['dari'] > 0) {
-                $persen = ($value['benar'] / $value['dari']) * 100;
-                $persen = round($persen, 2);
+                $indeks = ($value['benar'] / $value['dari']);
+                $indeks = round($indeks, 2);
 
                 /**
-                 * 0 - 30 = sulit
-                 * >30 <=70 = sedang
-                 * >70 = mudah
+                 * <= 0.3 = sulit
+                 * >0.3 <=0.7 = sedang
+                 * >0.7 = mudah
                  */
-                if ($persen <= 30) {
+                if ($indeks <= 0.3) {
                     $value['kategori'] = 'sulit';
-                } elseif ($persen > 30 AND $persen <= 70) {
+                } elseif ($indeks > 0.3 AND $indeks <= 0.7) {
                     $value['kategori'] = 'sedang';
-                } elseif ($persen > 70) {
+                } elseif ($indeks > 0.7 ) {
                     $value['kategori'] = 'mudah';
                 }
             } else {

@@ -24,24 +24,24 @@ class Menu
                 '<a href="' . site_url('message') . '"><i class="menu-icon icon-comments"></i>Pesan <span class="menu-count-new-msg"></span></a>'
             ),
             1 => array(
-                '<a href="' . site_url('siswa'). '"><i class="menu-icon icon-group"></i>Siswa <span class="menu-count-pending-siswa"></span></a>',
-                '<a href="' . site_url('pengajar'). '"><i class="menu-icon icon-user"></i>Pengajar <span class="menu-count-pending-pengajar"></span></a>'
+                '<a href="' . site_url('siswa'). '"><i class="menu-icon icon-group"></i>Manajemen Siswa <span class="menu-count-pending-siswa"></span></a>',
+                '<a href="' . site_url('pengajar'). '"><i class="menu-icon icon-user"></i>Manajemen Pengajar <span class="menu-count-pending-pengajar"></span></a>'
             ),
             2 => array(
-                '<a href="' . site_url('materi?clear_filter=true') . '"><i class="menu-icon icon-book"></i>Materi </a>',
-                '<a href="' . site_url('materi/komentar') . '"><i class="menu-icon icon-comments"></i>Komentar Materi <span class="menu-count-unread-laporan"></span></a>',
-                '<a href="' . site_url('tugas?clear_filter=true') . '"><i class="menu-icon icon-tasks"></i>Tugas </a>'
-            ),
-            3 => array(
                 '<a href="' . site_url('mapel') . '"><i class="menu-icon icon-book"></i>Manajemen Mata Pelajaran </a>',
                 '<a href="' . site_url('kelas') . '"><i class="menu-icon icon-tasks"></i>Manajemen Kelas </a>',
                 '<a href="' . site_url('kelas/mapel_kelas') . '"><i class="menu-icon icon-paste"></i>Mata Pelajaran Kelas </a>'
+            ),
+            3 => array(
+                '<a href="' . site_url('materi?clear_filter=true') . '"><i class="menu-icon icon-book"></i>Materi </a>',
+                '<a href="' . site_url('materi/komentar') . '"><i class="menu-icon icon-comments"></i>Komentar Materi <span class="menu-count-unread-laporan"></span></a>',
+                '<a href="' . site_url('tugas?clear_filter=true') . '"><i class="menu-icon icon-tasks"></i>Tugas </a>'
             ),
             4 => array(
                 '<a href="' . site_url('welcome/pengaturan') . '"><i class="menu-icon icon-wrench"></i>Pengaturan</a>',
                 /**'<a href="' . site_url('email') . '"><i class="menu-icon icon-envelope"></i>Email Template</a>',
                 '<a href="' . site_url('welcome/backup_restore') . '"><i class="menu-icon icon-hdd"></i>Backup & Restore</a>',
-                '<a href="' . site_url('welcome/hapus_data') . '"><i class="menu-icon icon-trash"></i>Hapus Data</a>', **/
+                '<a href="' . site_url('welcome/hapus_data') . '"><i class="menu-icon icon-trash"></i>Hapus Data</a>',**/
                 '<a href="' . site_url('login/logout') . '"><i class="menu-icon icon-signout"></i>Logout </a>'
             ),
         );

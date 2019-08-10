@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}{{ site_name }}{% endblock %}</title>
+    {% include 'layout-header-public.html' %}
+    {% block css %}{% endblock %}
+</head>
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+<div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+   
+    
+    <div class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
+      
+      <div class="container-fluid">
+        <div class="d-flex align-items-center">
+            <img src="{{ get_logo_config() }}" width="50px">
+          <div class="site-logo mr-auto">
+            <a href="{{ site_url() }}"><span class="visible-phone brand-txt">E-LEARNING</span><span class="visible-desktop visible-tablet brand-txt">{{ site_name }}</a></div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="intro-section">
+      <div class="slide-1" style="background-image: url('{{ base_url('assets/public/images/bg_1.jpg') }}');" data-stellar-background-ratio="0.5">
+  
+        <div class="container">
+
+            {% block content %}{% endblock %}
+
+        </div>
+    </div>
+    </div><!--/.wrapper-->
+
+    <footer class="footer-section bg-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7 ml-right">
+            <h3>Tentang E-Learning</h3>
+            <p>E-Learning adalah salah satu media pembelajaran digital berbasis online. Layanan yang disediakan di dalam sistem e-learning memberikan kemudahan dalam belajar. Dengan sumber materi yang bervariasi, mengerjakan tugas menjadi lebih menyenangkan.</p>
+          </div>
+
+
+          <div class="col-md-5 ml-auto">
+            <h3>Kontak</h3>
+            <p><i class="icon icon-building"></i> {{ get_pengaturan('nama-sekolah', 'value') }}</p>
+            <p><i class="icon icon-map-marker"></i> {{ get_pengaturan('alamat', 'value') }}
+                {% if get_pengaturan('telp', 'value') is not empty %}</p>
+            <p><i class="icon icon-phone"></i> {{ get_pengaturan('telp', 'value') }}
+                {% endif %}</p>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+</div>
+
+    {% include 'layout-footer-public.html' %}
+    {% block js %}{% endblock %}
+</body>

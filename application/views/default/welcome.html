@@ -10,7 +10,7 @@
                 <small class="pull-right hidden-phone hidden-tablet">{{ tgl_indo(date('Y-m-d')) }}</small>
                 Selamat datang di <b>E-LEARNING {{ get_pengaturan('nama-sekolah', 'value') }}</b>
                 <br>
-                <i class="icon icon-map-marker"></i> Alamat: {{ get_pengaturan('alamat', 'value') }}
+                <i class="icon icon-map-marker"></i> Alamat : {{ get_pengaturan('alamat', 'value') }}
                 {% if get_pengaturan('telp', 'value') is not empty %}
                 <i class="icon icon-phone"></i> Telpon: {{ get_pengaturan('telp', 'value') }}
                 {% endif %}
@@ -19,71 +19,30 @@
     </div>
 
     {% if is_admin() %}
-    <!--
-    {% if count_mapel_kelas == 0 %}
-    <div class="well well-large well-box" style="border:2px solid #29b7d3;">
-        <b><i class="icon-wrench"></i> Atur data berikut supaya aplikasi E-Learing dapat berjalan dengan baik:</b>
-        <table class="table table-hover" style="margin-top:10px;">
-            <tr>
-                <td width="30%">
-                    <a href="{{ site_url('mapel') }}"><b><i class="menu-icon icon-book"></i> Manajemen Mata Pelajaran</b></a>
-                </td>
-                <td>
-                    Input semua Mata Pelajaran yang ada di sekolah
-                </td>
-            </tr>
-            <tr>
-                <td width="30%">
-                    <a href="{{ site_url('kelas') }}"><b><i class="menu-icon icon-tasks"></i> Manajemen Kelas</b></a>
-                </td>
-                <td>
-                    Input semua Kelas yang ada di sekolah
-                </td>
-            </tr>
-            <tr>
-                <td width="30%">
-                    <a href="{{ site_url('kelas/mapel_kelas') }}"><b><i class="menu-icon icon-paste"></i> Mata Pelajaran Kelas</b></a>
-                </td>
-                <td>
-                    Atur Mata Pelajaran pada masing-masing kelas
-                </td>
-            </tr>
-        </table>
-    </div>
-    {% endif %}
--->
-
     <div class="btn-box-row row-fluid">
-        <a href="{{ site_url('siswa/index/1') }}" class="btn-box big span3">
-            <i class="icon-group"></i><b>{{ jml_siswa_aktif }}</b>
-            <p class="text-muted">Aktif Siswa</p>
+        <a href="{{ site_url('siswa/index/1') }}" class="btn-box span2">
+            <i class="icon-user"></i><b>{{ jml_siswa_aktif }}</b>
+            <p class="text-muted">Siswa Aktif</p>
         </a>
-        <a href="{{ site_url('pengajar/index/1') }}" class="btn-box big span3">
+        <a href="{{ site_url('pengajar/index/1') }}" class="btn-box span2">
             <i class="icon-user"></i><b>{{ jml_pengajar_aktif }}</b>
-            <p class="text-muted">Aktif Pengajar</p>
+            <p class="text-muted">Pengajar Aktif</p>
         </a>
-        <a href="{{ site_url('siswa/index/0') }}" class="btn-box big span3">
-            <i class="icon-group"></i><b>{{ jml_siswa_pending }}</b>
-            <p class="text-muted">Pending Siswa</p>
+        <a href="{{ site_url('siswa/index/0') }}" class="btn-box span2">
+            <i class="icon-check"></i><b>{{ jml_siswa_pending }}</b>
+            <p class="text-muted">Siswa Pending</p>
         </a>
-        <a href="{{ site_url('pengajar/index/0') }}" class="btn-box big span3">
-            <i class="icon-user"></i><b>{{ jml_pengajar_pending }}</b>
-            <p class="text-muted">Pending Pengajar</p>
+        <a href="{{ site_url('pengajar/index/0') }}" class="btn-box span2">
+            <i class="icon-check"></i><b>{{ jml_pengajar_pending }}</b>
+            <p class="text-muted">Pengajar Pending</p>
         </a>
-    </div>
-
-    <div class="btn-box-row row-fluid">
-        <a href="{{ site_url('siswa/index/2') }}" class="btn-box big span3">
-            <i class="icon-minus-sign"></i><b>{{ jml_siswa_blok }}</b>
-            <p class="text-muted">Blocking Siswa</p>
+        <a href="{{ site_url('siswa/index/3') }}" class="btn-box span2">
+            <i class="icon-bookmark"></i><b>{{ jml_siswa_alumni }}</b>
+            <p class="text-muted">Siswa Alumni</p>
         </a>
-        <a href="{{ site_url('pengajar/index/2') }}" class="btn-box big span3">
-            <i class="icon-minus-sign"></i><b>{{ jml_pengajar_blok }}</b>
-            <p class="text-muted">Blocking Pengajar</p>
-        </a>
-        <a href="{{ site_url('siswa/index/3') }}" class="btn-box big span3">
-            <i class="icon-list-alt"></i><b>{{ jml_siswa_alumni }}</b>
-            <p class="text-muted">Alumni Siswa</p>
+        <a href="{{ site_url('pengajar/index/2') }}" class="btn-box span2">
+            <i class="icon-remove"></i><b>{{ jml_pengajar_blok }}</b>
+            <p class="text-muted">Pengajar Blokir</p>
         </a>
     </div>
 

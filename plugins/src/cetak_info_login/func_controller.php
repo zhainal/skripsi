@@ -64,8 +64,8 @@ function index()
             $CI->login_model->update_password($val['login']['id'], $val['nis']);
             $val['login']['password'] = $val['nis'];
         } else {
-            $CI->login_model->update_password($val['login']['id'], "*123");
-            $val['login']['password'] = "*123";
+            $CI->login_model->update_password($val['login']['id'], "12345");
+            $val['login']['password'] = "12345";
         }
     }
 

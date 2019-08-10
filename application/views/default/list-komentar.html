@@ -36,17 +36,16 @@ Komentar Materi - {{ parent() }}
         <table class="table table-striped datatable">
             <thead>
                 <tr>
-                    <th width="5%">ID</th>
+                    <th width="5%">No</th>
                     <th>Komentar</th>
                 </tr>
             </thead>
             <tbody>
-                {% for k in komentar %}
+                {% for no, k in komentar %}
                 <tr>
                     <td>
-                        <b>{{ k.id }}</b>
+                        {{ no }}.<br />
                         {% if is_admin() %}
-                        <br>
                         <a href="{{ site_url('materi/komentar/delete/' ~ k.id) }}" onclick="return confirm('Anda yakin ingin menghapus komentar ini?')"><i class="icon icon-trash"></i></a>
                         {% endif %}
                     </td>

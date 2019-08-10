@@ -14,7 +14,7 @@
                         <i class="icon-reorder shaded"></i>
                     </a>
                     <a class="brand" href="{{ site_url }}">
-                        <img src="{{ get_logo_config() }}"> <span class="visible-phone brand-txt">{{ site_name }}</span><span class="visible-desktop visible-tablet brand-txt">{{ site_name }}</span>
+                        <img src="{{ get_logo_config() }}"> <span class="visible-phone brand-txt">E-LEARNING</span><span class="visible-desktop visible-tablet brand-txt">{{ site_name }}</span>
                     </a>
                     <div class="nav-collapse collapse navbar-inverse-collapse">
                         <!--<form class="navbar-search pull-left input-append" method="get" action="{{ site_url('welcome/search') }}">
@@ -30,8 +30,7 @@
                             <!--<li><a href="{{ site_url('welcome/get_plugin') }}">PLUGINS</a></li>-->
                             {% endif %}
                             <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <font color="#DAA520">{{ nama_panggilan(get_sess_data('user', 'nama')) }}</font>
-
+                                {{ nama_panggilan(get_sess_data('user', 'nama')) }}
                                 <span class="pull-right">
                                 <img src="{{ get_url_image_session(get_sess_data('user', 'foto'), 'medium', get_sess_data('user', 'jenis_kelamin')) }}" class="nav-avatar img-polaroid" />
                                 <b class="caret"></b></a>
@@ -90,7 +89,8 @@
     <div class="footer">
         <div class="container">
             <center>
-                <b><font color="#DCDCDC" class="copyright">{{ copyright|raw }} </font></b><br /> All Rights Reserved.
+                <b class="copyright">{{ footer|raw }} </b><br />
+                Media Digital Layanan Pembelajaran
             </center>
         </div>
     </div>

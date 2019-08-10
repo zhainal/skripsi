@@ -10,21 +10,10 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
-                    <i class="icon-reorder shaded"></i>
-                </a>
 
                 <a class="brand" href="{{ site_url() }}">
-                    <img src="{{ get_logo_config() }}"> <span class="visible-phone brand-txt">{{ site_name }} </span><span class="visible-desktop visible-tablet brand-txt">{{ site_name }}</span>
+                    <img src="{{ get_logo_config() }}"> <span class="visible-phone brand-txt">E-LEARNING </span><span class="visible-desktop visible-tablet brand-txt">{{ site_name }}</span>
                 </a>
-
-                <div class="nav-collapse collapse navbar-inverse-collapse">
-                    <ul class="nav pull-right">
-                        {% if get_pengaturan('registrasi-siswa', 'value') == 1 or get_pengaturan('registrasi-pengajar', 'value') == 1 %}
-                        <li><a href="{{ site_url('login/register') }}"><font color="#DAA520">DAFTAR</font></a></li>
-                        {% endif %}
-                    </ul>
-                </div>
             </div>
         </div><!-- /navbar-inner -->
     </div><!-- /navbar -->
@@ -40,10 +29,12 @@
     <div class="footer">
         <div class="container">
             <center>
-                <b><font color="#DCDCDC" class="copyright">{{ copyright|raw }} </font></b><br /> All Rights Reserved.
+                <b class="copyright">{{ footer|raw }} </b><br />
+                Media Digital Layanan Pembelajaran Online
             </center>
         </div>
     </div>
+</div>
 
     {% include 'layout-footer.html' %}
     {% block js %}{% endblock %}

@@ -110,7 +110,7 @@ Tambah Siswa - {{ parent() }}
             <div class="control-group">
                 <label class="control-label">Username <span class="text-error">*</span></label>
                 <div class="controls">
-                    <input type="text" id="username" name="username" class="span5" value="{{ set_value('username') }}" placeholder="example@example.sch.id">
+                    <input type="text" id="username" name="username" class="span5" value="{{ set_value('username') }}" placeholder="example.sch@domain.com">
 
                     <label class="checkbox inline"><input type="checkbox" name="default_username" id="default_username" onclick="username_default()" value="1" {{ set_checkbox('default_username', '1') }}> Gunakan Default Username</label>
                     <br>{{ form_error('username')|raw }}

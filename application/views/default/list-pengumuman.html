@@ -33,7 +33,7 @@ Pengumuman - {{ parent() }}
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th width="5%">ID</th>
+                        <th width="5%">No</th>
                         <th>Judul</th>
                         <th width="17%">Tgl. Tampil</th>
                         <th width="17%">Tgl. Tutup</th>
@@ -41,9 +41,9 @@ Pengumuman - {{ parent() }}
                     </tr>
                 </thead>
                 <tbody>
-                    {% for p in pengumuman %}
+                    {% for no, p in pengumuman %}
                     <tr>
-                        <td><b>{{ p.id }}</b></td>
+                        <td>{{ no }}.</td>
                         <td><a href="{{ site_url('pengumuman/detail/' ~ p.id) }}"><b>{{ p.judul }}</b></a></td>
                         <td>{{ tgl_indo(p.tgl_tampil) }}</td>
                         <td>{{ tgl_indo(p.tgl_tutup) }}</td>

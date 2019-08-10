@@ -91,7 +91,7 @@ Kerjakan Tugas Kelompok - {{ parent() }}
             {% if tugas.status == 2 and ada_nilai == false %}
             <dt>Jawaban Anda</dt>
             <dd>
-                <p><span>Anda masih dapat menjawab atau memperbaharui jawaban sebelumnya selama tugas belum ditutup.</span></p>
+                <p><span>Anda masih dapat menjawab atau memperbaharui jawaban sebelumnya selama tugas belum ditutup atau belum dikoreksi.</span></p>
                 <form method="post" action="{{ site_url('plugins/tugas_kelompok/kerjakan/' ~ tugas.id) }}">
                     <textarea name="jawaban" class="texteditor">{{ set_value('jawaban', kerjaan.konten)|raw }}</textarea>
                     <br>
@@ -103,7 +103,7 @@ Kerjakan Tugas Kelompok - {{ parent() }}
             <dt>Penilaian Anda terhadap Anggota Lain</dt>
             <dd>
                 {% if tugas.status == 2 and ada_nilai == false %}
-                <p>Berikan penilaian Anda terhadap kinerja masing-masing anggota dengan nilai 10 s/d 100. Nilai masih dapat diperbaharui selama tugas belum ditutup.</p>
+                <p>Berikan penilaian Anda terhadap kinerja masing-masing anggota dengan nilai 1 s/d 10. Nilai masih dapat diperbaharui selama tugas belum ditutup atau belum dikoreksi.</p>
                 {% endif %}
 
                 <table class="table table-striped table-bordered">

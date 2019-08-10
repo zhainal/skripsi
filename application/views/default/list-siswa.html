@@ -33,12 +33,13 @@ Data Siswa - {{ parent() }}
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th width="7%">
+                    <th width="10%">
                         {% if status_id == 0 or status_id == 2 %}
                             <input type="checkbox" style="margin-top:-2px;" onclick="filter_siswa_ch_uch_checkbox(this)">
                         {% endif %}
-                        ID
+                        No
                     </th>
+                    <th width="20%">NIS</th>
                     <th>Informasi Siswa</th>
                     <th width="22%"></th>
                 </tr>
@@ -50,7 +51,10 @@ Data Siswa - {{ parent() }}
                         {% if status_id == 0 or status_id == 2 %}
                             <input type="checkbox" name="siswa_id[]" value="{{ v.id }}" style="margin-top:-2px;">
                         {% endif %}
-                        <b>{{ v.id }}</b>
+                        {{ no }}.
+                    </td>
+                    <td>
+                        <b>{{ v.nis }}</b>
                     </td>
                     <td>
                         <img style="height:40px;width:40px; margin-right: 10px;" class="img-polaroid img-circle pull-left" src="{{ get_url_image_siswa(v.foto, 'medium', v.jenis_kelamin) }}">

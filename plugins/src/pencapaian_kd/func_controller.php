@@ -150,7 +150,7 @@ function hasil_data($id, $tipe = "")
     $format_data = kd_tugas_format_item($kd_tugas);
     $data['r']   = array_merge($kd_tugas, $format_data);
 
-    // pr($data);die;
+    // pr($data);die; 
 
     # cari kelas yang sudah mengerjakan
     $kelas_nilai = array();

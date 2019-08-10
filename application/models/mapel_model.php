@@ -180,7 +180,7 @@ class Mapel_model extends CI_Model
     public function retrieve_all_mapel()
     {
         $this->db->where('aktif' , 1);
-        $this->db->order_by('id', 'ASC');
+        $this->db->order_by('nama', 'ASC');
         $result = $this->db->get('mapel');
         return $result->result_array();
     }

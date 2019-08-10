@@ -21,20 +21,21 @@ Analisis Pencapaian Kompetensi Dasar - {{ parent() }}
         <table class="table table-bordered datatable table-striped">
             <thead>
                 <tr>
-                    <th width="10%">Analisis ID</th>
-                    <th>Tugas & Kompetensi Dasar</th>
+                    <th>No</th>
+                    <th width="20%">Tugas</th>
+                    <th>Kompetensi Dasar</th>
                     <th width="15%">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-            {% for t in tugas %}
+            {% for key, t in tugas %}
             <tr>
-                <td>#{{ t.id }}</td>
+                <td>{{ loop.index }}.</td>
+                <td>{{ t.tugas.judul }} - {{ t.tugas.mapel.nama }} - {{ t.tugas.nama_kelas }}</td>
                 <td>
-                    ID : {{ t.tugas.id }} - {{ t.tugas.judul }} - {{ t.tugas.mapel.nama }} - {{ t.tugas.nama_kelas }}<br>
+                    KD : <br>{{ t.kd_mapel_nama }}
                     <hr style="margin-top:5px; margin-bottom: 5px;">
-                    KD : {{ t.kd_mapel_nama }}
-                    <br>Nilai Minimal Lulus : {{ t.nilai_lulus }}
+                    <br>Kriteria Ketuntasan Minimal (KKM) : {{ t.nilai_lulus }}
                 </td>
                 <td>
                     <div class="btn-group">
@@ -48,6 +49,7 @@ Analisis Pencapaian Kompetensi Dasar - {{ parent() }}
             {% endfor %}
             </tbody>
         </table>
+
 
     </div>
 </div>

@@ -134,7 +134,7 @@ class Pengajar_model extends CI_Model
         $pagination    = true
     ) {
         $where = array();
-        $orderby['pengajar.id'] = 'DESC';
+        $orderby['pengajar.nip'] = 'ASC';
 
         if (!empty($nip)) {
             $nip = (int)$nip;
@@ -416,7 +416,7 @@ class Pengajar_model extends CI_Model
             $where['status_id'] = array($status_id, 'where');
         }
 
-        $orderby['pengajar.nama'] = 'ASC';
+        $orderby['pengajar.nip'] = 'ASC';
 
         $data = $this->pager->set('pengajar', $no_of_records, $page_no, $where, $orderby);
 
