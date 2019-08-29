@@ -515,7 +515,7 @@ class Tugas extends MY_Controller
         $data['comp_css'] = load_comp_css(array(base_url('assets/comp/colorbox/colorbox.css')));
 
         $retrieve_all = $this->tugas_model->retrieve_all_pertanyaan(
-            20,
+            5,
             $page_no,
             $tugas['id'],
             'ASC'
