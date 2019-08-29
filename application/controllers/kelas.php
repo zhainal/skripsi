@@ -166,7 +166,7 @@ class Kelas extends MY_Controller
                     default:
                         $return .= '<div class="panel-heading">
                             '.$s['nama'].'&nbsp;&nbsp;'.(($s['aktif'] == 0) ? '<span class="label label-warning">Kelas Tidak Aktif</span>' : '').'
-                            '.(($s['aktif'] == 1) ? '<a href="'.site_url('kelas/mapel_kelas/add/'.$p['id'].'/'.$s['id'].'/'.enurl_redirect(current_url())).'" class="btn btn-primary pull-right" style="margin-top:-5px;"><i class="icon-wrench"></i> Atur Mata Pelajaran</a>' : '').'
+                            '.(($s['aktif'] == 1) ? '<a href="'.site_url('kelas/mapel_kelas/add/'.$p['id'].'/'.$s['id'].'/'.enurl_redirect(current_url())).'" class="btn btn-primary pull-right" style="margin-top:-5px;" data-toggle="tooltip" title="Atur Mata Pelajaran"><i class="icon-wrench"></i></a>' : '').'
                         </div>';
                         if ($s['aktif'] == 1) {
                             $return .= '<div class="panel-body">';
@@ -185,9 +185,9 @@ class Kelas extends MY_Controller
                                     <td style="border-top:0px;">
                                         <div class="btn-group pull-right">';
                                             if ($v['aktif'] == 0) {
-                                                $return .= '<a class="btn btn-success btn-small" href="'.site_url('kelas/mapel_kelas/aktifkan/'.$p['id'].'/'.$s['id'].'/'.$v['id'].'/'.enurl_redirect(current_url())).'"><i class="icon-ok"></i> Aktifkan</a>';
+                                                $return .= '<a class="btn btn-success btn-small" href="'.site_url('kelas/mapel_kelas/aktifkan/'.$p['id'].'/'.$s['id'].'/'.$v['id'].'/'.enurl_redirect(current_url())).'" data-toggle="tooltip" title="Aktifkan"><i class="icon-ok"></i></a>';
                                             } else {
-                                                $return .= '<a class="btn btn-danger btn-small" href="#modal-'.$v['id'].'" data-toggle="modal"><i class="icon-trash"></i> Hapus</a>';
+                                                $return .= '<a class="btn btn-danger btn-small" href="#modal-'.$v['id'].'" data-toggle="tooltip" title="Hapus"><i class="icon-trash"></i></a>';
                                             }
                                         $return .= '</div>
                                         <b>

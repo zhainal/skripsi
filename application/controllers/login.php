@@ -42,11 +42,11 @@ class Login extends MY_Controller
         if ($this->form_validation->run('login') == TRUE) {
             $email    = $this->input->post('email', TRUE);
             $password = md5($this->input->post('password', TRUE));
-
             $get_login = $this->login_model->retrieve(null, $email, $password);
+            
 
             if (empty($get_login)) {
-                $this->session->set_flashdata('login', get_alert('warning', 'Maaf akun tidak ditemukan.'));
+                $this->session->set_flashdata('login', get_alert('warning', 'Username atau Password yang Anda masukkan tidak cocok. Silahkan periksa kembali!'));
                 redirect('login');
             } else {
                 # cari user yang login
@@ -63,7 +63,7 @@ class Login extends MY_Controller
 
                 # cek jika user berstatus tidak aktif
                 if ($user['status_id'] != 1) {
-                    $this->session->set_flashdata('login', get_alert('warning', 'Maaf status Anda tidak aktif.'));
+                    $this->session->set_flashdata('login', get_alert('warning', 'Status akun Anda tidak aktif, silahkan hubungi Administrator.'));
                     redirect('login');
                 }
 

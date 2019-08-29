@@ -146,7 +146,7 @@ Data Pengajar - {{ parent() }}
                         <br><b>Alamat :</b> {{ v.alamat }}
                     </td>
                     <td>
-                        <ul class="nav nav-pills" style="margin-bottom:0px;">
+                        <div class="nav nav-pills" style="margin-bottom:0px;">
                             {% if is_admin() == true %}
                             <li><a class="btn btn-default btn-small" href="{{ site_url('pengajar/detail/' ~ status_id ~ '/' ~ v.id) }}"><i class="icon-zoom-in"></i> Detail</a></li>
                             <li class="dropdown">
@@ -158,12 +158,11 @@ Data Pengajar - {{ parent() }}
                                     <li>{{ anchor('pengajar/edit_password/' ~ status_id ~ '/' ~ v.id, 'Edit Password', {'class' : 'pengajar-iframe-3', 'title' : 'Edit Password Pengajar'})|raw }}</li>
                                 </ul>
                             </li>
-                            <!--<li>{{ anchor('pengajar/hapus_data/' ~ status_id ~ '/' ~ v.id, '<i class="icon-trash"></i> Hapus', {'class' : 'btn btn-default btn-small', 'onclick' : "return confirm('Anda yakin ingin menghapus?')"})|raw }}</li>-->
 
                             {% elseif is_pengajar() == true %}
                             <li><a class="btn btn-default btn-small" href="{{ site_url('pengajar/detail/' ~ v.id) }}"><i class="icon-zoom-in"></i> Detail</a></li>
                             {% endif %}
-                        </ul>
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}

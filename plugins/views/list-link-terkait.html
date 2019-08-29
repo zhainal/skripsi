@@ -21,16 +21,16 @@ Link Terkait - {{ parent() }}
                 <div class="panel-body">
                     <form action="{{ site_url('plugins/link_terkait/index') }}" method="post" accept-charset="utf-8" class="form-horizontal row-fluid">
                         <div class="control-group">
+                            <label class="control-label">Nama Link</label>
+                            <div class="controls">
+                                <input name="label" class="span8" value="{{ set_value('label') }}" type="text">
+                            </div>
+                        </div>
+                        <div class="control-group">
                             <label class="control-label">URL <span class="text-error">*</span></label>
                             <div class="controls">
                                 <input name="url" class="span8" value="{{ set_value('url') }}" type="text">
                                 {{ form_error('url')|raw }}
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label">Label</label>
-                            <div class="controls">
-                                <input name="label" class="span8" value="{{ set_value('label') }}" type="text">
                             </div>
                         </div>
                         <div class="control-group">
@@ -51,16 +51,16 @@ Link Terkait - {{ parent() }}
                 <div class="panel-body">
                     <form action="{{ site_url('plugins/link_terkait/index/edit/' ~ key) }}" method="post" accept-charset="utf-8" class="form-horizontal row-fluid">
                         <div class="control-group">
+                            <label class="control-label">Nama Link</label>
+                            <div class="controls">
+                                <input name="label" class="span8" value="{{ set_value('label', l.label) }}" type="text">
+                            </div>
+                        </div>
+                        <div class="control-group">
                             <label class="control-label">URL <span class="text-error">*</span></label>
                             <div class="controls">
                                 <input name="url" class="span8" value="{{ set_value('url', l.link) }}" type="text">
                                 {{ form_error('url')|raw }}
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label">Label</label>
-                            <div class="controls">
-                                <input name="label" class="span8" value="{{ set_value('label', l.label) }}" type="text">
                             </div>
                         </div>
                         <div class="control-group">
@@ -89,8 +89,8 @@ Link Terkait - {{ parent() }}
                         <td><a target="_blank" href="{{ l.link }}">{{ (l.label is not empty) ? l.label : l.link }}</a></td>
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-small btn-default" href="{{ site_url('plugins/link_terkait/index/edit/' ~ key) }}">Edit</a>
-                                <a class="btn btn-small btn-default" href="{{ site_url('plugins/link_terkait/index/delete/' ~ key) }}" onclick="return confirm('Anda yakin ingin menghapus?')">Hapus</a>
+                                <a class="btn btn-small btn-default" href="{{ site_url('plugins/link_terkait/index/edit/' ~ key) }}" data-toggle="tooltip" title="Edit"><i class="icon-edit"></i></a>
+                                <a class="btn btn-small btn-default" href="{{ site_url('plugins/link_terkait/index/delete/' ~ key) }}" onclick="return confirm('Anda yakin ingin menghapus?')" data-toggle="tooltip" title="Hapus"><i class="icon-trash"></i></a>
                             </div>
                         </td>
                     </tr>

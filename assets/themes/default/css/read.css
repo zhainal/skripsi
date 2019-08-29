@@ -1,7 +1,7 @@
 html,
 body {
     height: 100%;
-    background-color: rgb(245, 239, 230);
+    background-color: #f6f8fa;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     line-height: 21px;
     font-size: 16px;
@@ -84,12 +84,10 @@ iframe {
     max-width: 100%;
 }
 .is_reply {
-    margin-left: 40px;
+    margin-left: auto;
     border-left: 2px solid #5bc0de;
 }
-.footer {
-    font-size: 13px;
-}
+
 .materi {
     background-color: #f5f5f5;
     padding: 10px;
@@ -102,4 +100,44 @@ ul.ul-materi li {
 .bg-form-komentar {
     background-color: #f5f5f5;padding: 10px;border-radius: 5px;
     font-size: 14px;
+}
+
+/* Jika ukuran layar 999px atau kurang dari itu */
+
+@media screen and (max-width:1024px){
+
+    .container {
+    width: 90%;
+}
+.wrap-content {
+    padding-right: auto;
+    padding-left: auto;
+}
+
+
+/* Jika ukuran layar 680px atau kurang dari itu */
+
+@media screen and (max-width:768px){
+
+h1.title {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 22px;
+    line-height: auto;
+}
+.materi {
+    padding: auto;
+    border-radius: auto;
+    font-size: 15px;
+}
+
+}
+
+/* Jika ukuran layar 480px atau kurang */
+
+@media screen and (max-width: 480px) {
+
+h1.title {
+    font-size: 20px;
+}
 }

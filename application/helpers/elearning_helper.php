@@ -99,7 +99,7 @@ function default_parser_item($add_item = array())
 
     # cek proses install tidak
     if ($CI->uri->segment(1) != 'setup') {
-        $return['footer'] = 'Digital Learning System | E-LEARNING ' . get_pengaturan('nama-sekolah', 'value').'';
+        $return['footer'] = 'E-LEARNING ' . get_pengaturan('nama-sekolah', 'value').'';
         $return['site_name'] = 'E-LEARNING '.get_pengaturan('nama-sekolah', 'value');
         //$return['version']   = '<a href="https://github.com/almazary/new_elearning">versi ' . get_pengaturan('versi', 'value') . '</a>';
 

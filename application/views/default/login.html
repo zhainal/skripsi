@@ -6,38 +6,38 @@ Login - {{ parent() }}
 
 {% block content %}
 <div class="row align-items-center">
-            <div class="col-12">
-              <div class="row align-items-center">
-                <div class="col-lg-6 mb-12">
-                  <h1>Media Pembelajaran Online</h1>
-                  <p class="mb-4">Media digital layanan pembelajaran online memberikan kemudahan untuk berinteraksi dan berkomunikasi langsung dengan para narasumber, belajar menjadi lebih mudah kapanpun dan dimanapun. SELAMAT BELAJAR.</p>
-                  {% if get_pengaturan('registrasi-siswa', 'value') == 1 or get_pengaturan('registrasi-pengajar', 'value') == 1 %}
-                  <p><a href="{{ site_url('login/register') }}" class="btn btn-primary py-3 px-5 btn-pill">Daftar Sekarang</a></p>
-                  {% endif %}
+ <div class="col-12">
+  <div class="row align-items-center">
+    <div class="col-lg-6 mt-5">
+      <h1  data-aos="fade-up" data-aos-delay="100">Media Pembelajaran Online</h1>
+      <p class="mb-4"  data-aos="fade-up" data-aos-delay="200">Belajar menjadi lebih mudah kapanpun dan dimanapun dengan menggunakan e-learning. SELAMAT BELAJAR.</p>
+      {% if get_pengaturan('registrasi-siswa', 'value') == 1 or get_pengaturan('registrasi-pengajar', 'value') == 1 %}
+      <p data-aos="fade-up" data-aos-delay="300"><a href="{{ site_url('login/register') }}" class="btn btn-primary py-3 px-5 btn-pill">DAFTAR SEKARANG</a></p>
+      {% endif %}
 
-                </div>
+    </div>
 
-                <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="100">
-                  <form action="" method="post" class="form-box">
-                    <h3 class="h4 text-black mb-4">Login E-Learning</h3>
-                    {{ get_flashdata('login')|raw }}
-                    <div class="form-group">
-                      <input type="text" name="email" class="form-control" placeholder="Username [Alamat E-mail]" value="{{ set_value('email') }}" autofocus>
-                      {{ form_error('email')|raw }}
-                    </div>
-                    <div class="form-group">
-                      <input type="password" name="password" class="form-control" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                      <input type="submit" class="btn btn-primary btn-pill" value="Masuk">
-                      <a href="{{ site_url('login/lupa_password') }}">Lupa Password?</a>
-                    </div>
-                  </form>
-
-                </div>
-              </div>
-            </div>
-            
-          </div>
+    <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="500">
+      <form action="" method="post" class="form-box">
+        <h3 class="h4 text-black mb-4">Login E-Learning</h3>
+        {{ get_flashdata('login')|raw }}
+        <div class="form-group">
+          <input type="text" name="email" class="form-control" placeholder="Username [Alamat E-Mail]"value="{{ set_value('email') }}">
+          {{ form_error('email')|raw }}
         </div>
+        <div class="form-group">
+          <input type="password" name="password" class="form-control" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary btn-pill" value="Masuk">
+        </div>
+        <div class ="form-group mt-1 ">
+          <a href="{{ site_url('login/lupa_password') }}">Lupa Password?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+ </div>
+</div>
+
 {% endblock %}

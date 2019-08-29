@@ -9,10 +9,16 @@ Pengumuman - {{ parent() }}
     <div class="module-head">
         <h3>Pengumuman</h3>
     </div>
-    <div class="module-body">
+    <div class="module-body"> 
         {{ get_flashdata('pengumuman')|raw }}
 
         <div class="clearfix">
+            <div class="pull-left">
+                {% if is_siswa() == false %}
+                <a href="{{ site_url('pengumuman/add') }}" class="btn btn-primary"><i class="icon-pencil"></i> Buat</a>
+                {% endif %}
+            </div>
+            <br><br> 
             <div class="pull-right">
                 <form class="form-search" method="get" action="{{ site_url('pengumuman/index/' ~ page_no ~ '/') }}">
                     <div class="input-append">
@@ -21,11 +27,7 @@ Pengumuman - {{ parent() }}
                     </div>
                 </form>
             </div>
-            <div class="pull-left">
-                {% if is_siswa() == false %}
-                <a href="{{ site_url('pengumuman/add') }}" class="btn btn-primary"><i class="icon-pencil"></i> Buat</a>
-                {% endif %}
-            </div>
+            
         </div>
         <br>
 

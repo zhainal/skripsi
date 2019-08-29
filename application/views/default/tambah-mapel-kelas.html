@@ -17,7 +17,8 @@ Mata Pelajaran Kelas - {{ parent() }}
         {% endif %}
 
         <div class="bs-callout bs-callout-info">
-            <b><a class="as-link pull-right" data-toggle="collapse" data-target="#form-add-mapel">Tambah Mata Pelajaran</a></b>
+            <b><a class="as-link pull-right" data-toggle="collapse" data-target="#form-add-mapel"><i class="icon-plus"></i>Tambah Mata Pelajaran</a></b>
+            <br/><br/>
             Pilih Mata Pelajaran yang ingin dimasukkan pada <b>{{ kelas['nama'] }}</b>
 
             <div id="form-add-mapel" {% if post_mapel == 0 %} class="collapse" {% endif %}>

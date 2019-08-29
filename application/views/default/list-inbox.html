@@ -5,14 +5,17 @@ Pesan - {{ parent() }}
 {% endblock %}
 
 {% block content %}
-<div class="module message">
+<div class="module">
     <div class="module-head">
         <h3>Pesan</h3>
     </div>
     <div class="module-body">
-        <div class="module-option clearfix">
-            {{ get_flashdata('msg')|raw }}
-
+        {{ get_flashdata('msg')|raw }}
+        <div class="clearfix">
+            <div class="pull-left">
+                <a href="{{ site_url('message/create/') }}" class="btn btn-primary"><i class="icon-pencil"></i> Tulis Pesan</a>
+            </div>
+            <br><br> 
             <div class="pull-right">
                 <form class="form-search" method="get" action="{{ site_url('message/index/') }}">
                     <div class="input-append">
@@ -21,10 +24,9 @@ Pesan - {{ parent() }}
                     </div>
                 </form>
             </div>
-            <div class="pull-left">
-                <a href="{{ site_url('message/create/') }}" class="btn btn-primary"><i class="icon-pencil"></i> Tulis Pesan</a>
-            </div>
+            
         </div>
+        <br/>
         <div class="module-body table">
             <table class="table table-message">
                 <tbody>
