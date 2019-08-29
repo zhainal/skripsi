@@ -56,7 +56,7 @@ class Siswa extends MY_Controller
         }
 
         # ambil semua data siswa
-        $retrieve_all = $this->siswa_model->retrieve_all(20, $page_no, null, null, $status_id);
+        $retrieve_all = $this->siswa_model->retrieve_all(10, $page_no, null, null, $status_id);
 
         # dapatkan data2 siswa
         foreach ($retrieve_all['results'] as $key => $val) {

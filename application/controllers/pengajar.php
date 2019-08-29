@@ -58,7 +58,7 @@ class Pengajar extends MY_Controller
         $base_url_module = 'pengajar/index/'.$status_id.'/';
 
         # ambil semua data pengajar
-        $retrieve_all = $this->pengajar_model->retrieve_all(20, $page_no, $status_id);
+        $retrieve_all = $this->pengajar_model->retrieve_all(10, $page_no, $status_id);
 
         $data['status_id']  = $status_id;
         $data['pengajar']   = $retrieve_all['results'];

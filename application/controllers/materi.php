@@ -152,7 +152,7 @@ class Materi extends MY_Controller
 
         # ambil semua data materi
         $retrieve_all_materi = $this->materi_model->retrieve_all(
-            20,
+            10,
             $page_no,
             $filter['pengajar_id'],
             $filter['siswa_id'],

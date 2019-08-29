@@ -150,7 +150,7 @@ class Tugas extends MY_Controller
 
         # ambil semua data tugas
         $retrieve_all_tugas = $this->tugas_model->retrieve_all(
-            20,
+            10,
             $page_no,
             $filter['mapel_id'],
             $filter['pengajar_id'],
