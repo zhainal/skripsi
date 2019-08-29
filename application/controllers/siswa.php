@@ -316,7 +316,7 @@ class Siswa extends MY_Controller
         }
 
         if (empty($filter['status_id'])) {
-            $filter['status_id'] = array(1, 2);
+            $filter['status_id'] = array(1);
         }
 
         $data['filter'] = $filter;
